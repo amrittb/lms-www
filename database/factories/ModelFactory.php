@@ -11,11 +11,13 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
-        'name' => $faker->name,
+        'first_name' => $faker->firstName,
+        'last_name' => $faker->lastName,
         'email' => $faker->safeEmail,
         'password' => bcrypt(str_random(10)),
-        'remember_token' => str_random(10),
+        'expires_at' => \Carbon\Carbon::now()->addYear($faker->numberBetween(1,3)),
+        'role_id' => $faker->randomElement(\App\Models\Role::lists('id')->toArray())
     ];
 });
