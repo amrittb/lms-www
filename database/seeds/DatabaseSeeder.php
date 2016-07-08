@@ -2,16 +2,29 @@
 
 use Illuminate\Database\Seeder;
 
-class DatabaseSeeder extends Seeder
-{
+class DatabaseSeeder extends Seeder {
+
+    /**
+     * Tables to Seed
+     *
+     * @var array
+     */
+    protected $tables = [
+        RolesTableSeeder::class,
+        UsersTableSeeder::class,
+        PublicationsTableSeeder::class,
+        BooksTableSeeder::class,
+    ];
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
-        $this->call(RolesTableSeeder::class);
-        $this->call(UsersTableSeeder::class);
+    public function run() {
+        
+        foreach($this->tables as $table) {
+            $this->call($table);
+        }
     }
 }
