@@ -2,6 +2,11 @@
 
 @import "colors";
 
+@import "bootstrap/variables";
+
+$font-size-base: 16px;
+$font-family-base: "Open Sans";
+
 @import "bootstrap";
 
 @import "components/typography";
