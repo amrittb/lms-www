@@ -11,6 +11,10 @@ class ViewComposerServiceProvider extends ServiceProvider {
         view()->composer(
             'auth.register', 'App\Http\ViewComposers\RolesComposer'
         );
+
+        view()->composer(
+            'partials.books.save', 'App\Http\ViewComposers\PublicationsComposer'
+        );
     }
 
     /**
