@@ -10,15 +10,43 @@
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label for="name" class="col-md-4 control-label">Name</label>
+                        <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                            <label for="first-name" class="col-md-4 control-label">First Name</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}">
+                                <input id="first-name" type="text" class="form-control" name="first_name" value="{{ old('first_name') }}">
 
-                                @if ($errors->has('name'))
+                                @if ($errors->has('first_name'))
                                     <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
+                                        <strong>{{ $errors->first('first_name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('middle_name') ? ' has-error' : '' }}">
+                            <label for="middle-name" class="col-md-4 control-label">Middle Name</label>
+
+                            <div class="col-md-6">
+                                <input id="middle-name" type="text" class="form-control" name="middle_name" value="{{ old('middle_name') }}">
+
+                                @if ($errors->has('middle_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('middle_name') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('last_name') ? ' has-error' : '' }}">
+                            <label for="last-name" class="col-md-4 control-label">Last Name</label>
+
+                            <div class="col-md-6">
+                                <input id="last-name" type="text" class="form-control" name="last_name" value="{{ old('last_name') }}">
+
+                                @if ($errors->has('last_name'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('last_name') }}</strong>
                                     </span>
                                 @endif
                             </div>
@@ -66,6 +94,39 @@
                             </div>
                         </div>
 
+                        <div class="form-group{{ $errors->has('expires_at') ? ' has-error' : '' }}">
+                            <label for="expires-at" class="col-md-4 control-label">Expires At</label>
+
+                            <div class="col-md-6">
+                                <input type="date" class="form-control" name="expires_at" id="expires-at">
+
+                                @if ($errors->has('expires_at'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('expires_at') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
+                            <label for="user-role" class="col-md-4 control-label">Role</label>
+
+                            <div class="col-md-6">
+                                <select name="role_id" id="user-role" class="form-control">
+                                    @foreach($roles as $role)
+                                        <option value="{{ $role->id }}">{{ $role->role_name }}</option>
+                                    @endforeach
+                                </select>
+
+                                @if ($errors->has('role_id'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('role_id') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
                                 <button type="submit" class="btn btn-primary">
@@ -79,4 +140,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    (function(){
+        $("#expires-at").pickadate();
+    })();
+</script>
 @endsection

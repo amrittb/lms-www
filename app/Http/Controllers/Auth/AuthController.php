@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\Models\Role;
+use App\Models\User;
+use Carbon\Carbon;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -49,9 +51,12 @@ class AuthController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
+            'first_name' => 'required|max:100',
+            'last_name' => 'required|max:100',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|min:6|confirmed',
+            'expires_at' => 'required|date',
+            'role_id' => 'required|integer',
         ]);
     }
 
@@ -61,12 +66,20 @@ class AuthController extends Controller
      * @param  array  $data
      * @return User
      */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
+    protected function create(array $data) {
+
+        $input = [
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-        ]);
+            'expires_at' => Carbon::parse($data['expires_at']),
+        ];
+
+        if(trim($data['middle_name']) != "") {
+            $input['middle_name'] = $data['middle_name'];
+        }
+
+        return Role::findOrFail($data['role_id'])->users()->create($input);
     }
 }
