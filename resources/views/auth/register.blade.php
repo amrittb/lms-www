@@ -98,7 +98,7 @@
                             <label for="expires-at" class="col-md-4 control-label">Expires At</label>
 
                             <div class="col-md-6">
-                                <input type="date" class="form-control" name="expires_at" id="expires-at">
+                                <date-picker name="expires_at" id="expires-at"></date-picker>
 
                                 @if ($errors->has('expires_at'))
                                     <span class="help-block">
@@ -140,10 +140,4 @@
         </div>
     </div>
 </div>
-
-<script>
-    (function(){
-        $("#expires-at").pickadate();
-    })();
-</script>
 @endsection
