@@ -8,7 +8,7 @@
 
                 @include('partials.messagebag')
 
-                @if($books->count())
+                @if(count($books))
                     <div class="table-responsive">
                         <table class="table table-stripped">
                             <thead>
@@ -27,15 +27,11 @@
                                         <td>{{ $book->book_name }}</td>
                                         <td>{{ $book->isbn }}</td>
                                         <td>{{ $book->edition }} Edition</td>
-                                        <td>{{ $book->publication->publication_name }}</td>
+                                        <td>{{ $book->publication_name }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-
-                    <div class="text--center">
-                        {!! $books->render() !!}
                     </div>
                 </div>
             @else
