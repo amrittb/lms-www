@@ -4,7 +4,7 @@
     <label for="book-name" class="col-md-4 control-label">Book Name</label>
 
     <div class="col-md-6">
-        <input id="book-name" type="text" class="form-control" name="book_name" value="{{ old('book_name') }}">
+        <input id="book-name" type="text" class="form-control" name="book_name" value="{{ old('book_name')?:(isset($book)?$book->book_name:'') }}">
 
         @if ($errors->has('book_name'))
             <span class="help-block">
@@ -18,7 +18,7 @@
     <label for="isbn" class="col-md-4 control-label">ISBN No.</label>
 
     <div class="col-md-6">
-        <input id="isbn" type="text" class="form-control" name="isbn" value="{{ old('isbn') }}">
+        <input id="isbn" type="text" class="form-control" name="isbn" value="{{ old('isbn')?:(isset($book)?$book->isbn:'') }}">
 
         @if ($errors->has('isbn'))
             <span class="help-block">
@@ -32,7 +32,7 @@
     <label for="edition" class="col-md-4 control-label">Edition</label>
 
     <div class="col-md-6">
-        <input id="edition" type="number" class="form-control" name="edition" value="{{ old('edition') }}">
+        <input id="edition" type="number" class="form-control" name="edition" value="{{ old('edition')?:(isset($book)?$book->edition:'') }}">
 
         @if ($errors->has('edition'))
             <span class="help-block">
@@ -48,7 +48,11 @@
     <div class="col-md-6">
         <select id="publication-id" class="form-control" name="publication_id">
             @foreach($publications as $publication)
-                <option value="{{ $publication->id }}">{{ $publication->publication_name }}</option>
+                <option value="{{ $publication->id }}"
+                    {{ (intval(old('publication_id')?:(isset($book)?$book->publication_id:$publications->first()->id)) == $publication->id)?'selected':'' }}
+                >
+                    {{ $publication->publication_name }}
+                </option>
             @endforeach
         </select>
 

@@ -18,6 +18,7 @@
                                     <th>Isbn</th>
                                     <th>Edition</th>
                                     <th>Publication</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -28,6 +29,16 @@
                                         <td>{{ $book->isbn }}</td>
                                         <td>{{ $book->edition }} Edition</td>
                                         <td>{{ $book->publication_name }}</td>
+                                        <td>
+                                            <a href="{{ route('books.edit',['books' => $book->id]) }}" class="btn btn-primary">Edit?</a>
+                                            <form action="{{ route('books.destroy',['books' => $book->id]) }}" method="POST" style="display: inline-block;">
+                                                {{ csrf_field() }}
+
+                                                <input type="hidden" name="_method" value="delete">
+
+                                                <input type="submit" class="btn btn-danger" value="Delete?">
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
