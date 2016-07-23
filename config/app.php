@@ -157,6 +157,10 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewComposerServiceProvider::class,
 
+        /*
+         * Third party Service Providers...
+         */
+        Intervention\Validation\ValidationServiceProviderLaravel5::class,
     ],
 
     /*

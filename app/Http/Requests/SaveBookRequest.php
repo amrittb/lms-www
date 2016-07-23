@@ -19,7 +19,7 @@ class SaveBookRequest extends Request
     public function rules() {
         return [
             'book_name' => 'required|min:10|max:255',
-            'isbn' => 'required|min:10|max:13|unique:books',
+            'isbn' => 'required|isbn|unique:books',
             'edition' => 'required|integer|min:1',
             'publication_id' => 'required|integer|exists:publications,id'
         ];
