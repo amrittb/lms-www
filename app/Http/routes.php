@@ -18,3 +18,5 @@ Route::group(['prefix' => '/books/{books}/copies'],function() {
         'as' => 'books.copies.destroy'
     ]);
 });
+
+Route::resource('/users','UsersController',['except' => ['create','store']]);
