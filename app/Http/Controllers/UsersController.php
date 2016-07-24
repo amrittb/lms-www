@@ -96,7 +96,11 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
+        DB::delete("DELETE FROM users WHERE users.id = :user_id",[
+            'user_id' => $id
+        ]);
 
+        return redirect()->back()->with('message','User deleted successfully');
     }
 
     /**
