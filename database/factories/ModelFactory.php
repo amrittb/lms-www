@@ -47,3 +47,12 @@ $factory->define(App\Models\BookCategory::class,function(Faker\Generator $faker)
        'category_name' => $faker->word
    ];
 });
+
+/**
+ * Defines a Author Model factory
+ */
+$factory->define(App\Models\Author::class,function(Faker\Generator $faker) {
+    return [
+       'name' => $faker->name
+    ];
+});

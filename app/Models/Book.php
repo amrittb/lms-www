@@ -32,4 +32,13 @@ class Book extends Model {
     public function copies() {
         return $this->hasMany('App\Models\BookCopy');
     }
+
+    /**
+     * Defines a relationship with Author Model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function authors() {
+        return $this->belongsToMany('App\Models\Author');
+    }
 }
