@@ -18,6 +18,7 @@
                                     <th>Isbn</th>
                                     <th>Edition</th>
                                     <th>Publication</th>
+                                    <th>No of Copies</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -29,8 +30,10 @@
                                         <td>{{ $book->isbn }}</td>
                                         <td>{{ $book->edition }} Edition</td>
                                         <td>{{ $book->publication_name }}</td>
+                                        <td>{{ $book->copy_count }}</td>
                                         <td>
-                                            <a href="{{ route('books.edit',['books' => $book->id]) }}" class="btn btn-primary">Edit?</a>
+                                            <a href="{{ route('books.show',['books' => $book->id]) }}" class="btn btn-primary">View Book</a>
+                                            <a href="{{ route('books.edit',['books' => $book->id]) }}" class="btn btn-warning">Edit?</a>
                                             <form action="{{ route('books.destroy',['books' => $book->id]) }}" method="POST" style="display: inline-block;">
                                                 {{ csrf_field() }}
 

@@ -11,7 +11,6 @@ class BooksController extends Controller {
     /**
      * Lists all the books
      *
-     * @param Request $request
      * @return mixed
      */
     public function index() {
@@ -21,9 +20,12 @@ class BooksController extends Controller {
                                     books.edition,
                                     books.created_at,
                                     books.publication_id,
-                                    publications.publication_name 
-                                FROM books 
+                                    publications.publication_name,
+                                    count(copy_id) as copy_count
+                                FROM book_copies
+                                JOIN books ON books.id = book_copies.book_id
                                 JOIN publications ON publications.id = books.publication_id 
+                                GROUP BY book_copies.book_id
                                 ORDER BY created_at DESC");
 
         return view('books.index',compact('books'));
