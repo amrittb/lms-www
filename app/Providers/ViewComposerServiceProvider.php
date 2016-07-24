@@ -9,7 +9,7 @@ class ViewComposerServiceProvider extends ServiceProvider {
      */
     public function boot() {
         view()->composer(
-            'auth.register', 'App\Http\ViewComposers\RolesComposer'
+            'partials.users.save', 'App\Http\ViewComposers\RolesComposer'
         );
 
         view()->composer(
