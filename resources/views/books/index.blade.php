@@ -10,7 +10,7 @@
 
                 @if(count($books))
                     <div class="table-responsive">
-                        <table class="table table-stripped">
+                        <table class="table table-stripped" style="font-size:0.9em;">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -19,6 +19,7 @@
                                     <th>Edition</th>
                                     <th>Publication</th>
                                     <th>Category</th>
+                                    <th>Authors</th>
                                     <th>No of Copies</th>
                                     <th>Actions</th>
                                 </tr>
@@ -32,16 +33,25 @@
                                         <td>{{ $book->edition }} Edition</td>
                                         <td>{{ $book->publication_name }}</td>
                                         <td>{{ $book->category_name }}</td>
+                                        <td>
+                                            <ul>
+                                                @foreach($book->authors as $author)
+                                                    <li>{{ $author->name }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </td>
                                         <td>{{ $book->copy_count }}</td>
                                         <td>
-                                            <a href="{{ route('books.show',['books' => $book->id]) }}" class="btn btn-primary">View Book</a>
-                                            <a href="{{ route('books.edit',['books' => $book->id]) }}" class="btn btn-warning">Edit?</a>
-                                            <form action="{{ route('books.destroy',['books' => $book->id]) }}" method="POST" style="display: inline-block;">
+                                            <a href="{{ route('books.show',['books' => $book->id]) }}" class="btn btn-primary btn-block">View</a><br />
+                                            <a href="{{ route('books.edit',['books' => $book->id]) }}" class="btn btn-warning btn-block">Edit</a><br />
+                                            <form action="{{ route('books.destroy',['books' => $book->id]) }}" method="POST">
                                                 {{ csrf_field() }}
 
                                                 <input type="hidden" name="_method" value="delete">
 
-                                                <input type="submit" class="btn btn-danger" value="Delete?">
+                                                <button type="submit" class="btn btn-danger btn-block">
+                                                    Delete
+                                                </button>
                                             </form>
                                         </td>
                                     </tr>

@@ -19,6 +19,20 @@
                 <p>
                     <strong>Category: </strong> {{ $book->category_name }}
                 </p>
+                <p>
+                    <strong>Authors: </strong>
+                    @if(count($book->authors))
+                        <ul style="list-style-type:none;">
+                            @foreach($book->authors as $author)
+                                <li>
+                                    {{  $author->name }}
+                                </li>
+                            @endforeach
+                        </ul>
+                    @else
+                        No Authors on this book.
+                    @endif
+                </p>
                 <strong>Copies: </strong> <br />
 
                 @include('partials.messagebag')

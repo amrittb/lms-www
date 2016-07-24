@@ -3,6 +3,7 @@
 use App\Http\Requests\SaveBookRequest;
 use App\Models\Publication;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +15,7 @@ class BooksController extends Controller {
      * @return mixed
      */
     public function index() {
-        $books = DB::select("SELECT books.id,
+        $books = collect(DB::select("SELECT books.id,
                                     books.book_name,
                                     books.isbn,
                                     books.edition,
@@ -28,7 +29,24 @@ class BooksController extends Controller {
                                 JOIN publications ON publications.id = books.publication_id 
                                 JOIN book_categories ON book_categories.id = books.category_id
                                 GROUP BY book_copies.book_id
-                                ORDER BY created_at DESC");
+                                ORDER BY created_at DESC"));
+
+        $bookIds = $books->map(function($item){
+            return $item->id;
+        });
+
+        $authors = collect(DB::select("SELECT author_book.book_id,
+                                      authors.id,
+                                      authors.name
+                                FROM author_book
+                                JOIN authors ON authors.id = author_book.author_id
+                                WHERE author_book.book_id IN (".join(',',$bookIds->toArray()).")"));
+
+        $books->each(function($book,$key) use ($authors) {
+            $book->authors = $authors->filter(function($author,$key) use ($book){
+               return $book->id == $author->book_id;
+           });
+        });
 
         return view('books.index',compact('books'));
     }
@@ -142,7 +160,7 @@ class BooksController extends Controller {
      * @return mixed
      */
     protected function findBookFromId($bookId) {
-        return DB::selectOne("SELECT books.id,
+        $book = DB::selectOne("SELECT books.id,
                                       books.book_name,
                                       books.isbn,
                                       books.edition,
@@ -156,6 +174,19 @@ class BooksController extends Controller {
                               WHERE books.id = :book_id", [
             'book_id' => intval($bookId)
         ]);
+
+        if(!$book) {
+            throw new ModelNotFoundException();
+        }
+
+        $book->authors = DB::select("SELECT authors.name
+                                    FROM author_book
+                                    JOIN authors ON authors.id = author_book.author_id
+                                    WHERE author_book.book_id = :book_id",[
+            'book_id' => $bookId
+        ]);
+
+        return $book;
     }
 
     /**
