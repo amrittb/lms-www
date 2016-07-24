@@ -12,4 +12,9 @@ Route::group(['prefix' => '/books/{books}/copies'],function() {
         'uses' => 'BookCopiesController@store',
         'as' => 'books.copies.store'
     ]);
+
+    Route::delete('/{copies}',[
+       'uses' => 'BookCopiesController@destroy',
+        'as' => 'books.copies.destroy'
+    ]);
 });

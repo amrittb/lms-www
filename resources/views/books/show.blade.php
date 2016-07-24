@@ -19,6 +19,8 @@
 
                 <strong>Copies: </strong> <br />
 
+                @include('partials.messagebag')
+
                 <form action="{{ route('books.copies.store',['books' => $book->id]) }}" method="POST">
                     {{ csrf_field() }}
 
@@ -43,14 +45,26 @@
                                     <tr>
                                         <td>{{ $copy->copy_id }}</td>
                                         <td>Status</td>
-                                        <td>Actions</td>
+                                        <td>
+                                            <form action="{{ route('books.copies.destroy',['books' => $book->id,'copies' => $copy->copy_id]) }}" method="post">
+                                                {{ csrf_field() }}
+
+                                                <input type="hidden" name="_method" value="delete">
+
+                                                <input type="submit" value="Delete?" class="btn btn-danger">
+                                            </form>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                 @else
-                    There are no copies for this book. Add at least one.
+                    <br>
+                    <br>
+                    <h4 class="text--center">
+                        There are no copies for this book. Add at least one.
+                    </h4>
                 @endif
             </div>
         </div>

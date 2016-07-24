@@ -22,4 +22,22 @@ class BookCopiesController extends Controller {
 
         return redirect()->back()->with('message','Book Copy added successfully');
     }
+
+    /**
+     * Deletes a book copy
+     *
+     * @param $bookId
+     * @param $copyId
+     * @return mixed
+     */
+    public function destroy($bookId,$copyId) {
+        DB::delete("DELETE FROM book_copies
+                    WHERE book_copies.book_id = :book_id 
+                    AND book_copies.copy_id = :copy_id", [
+            'book_id' => $bookId,
+            'copy_id' => $copyId
+        ]);
+
+        return redirect()->back()->with('message','Book Copy deleted successfully');
+    }
 }
