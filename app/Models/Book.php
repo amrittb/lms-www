@@ -23,4 +23,13 @@ class Book extends Model {
     public function publication() {
         return $this->belongsTo('App\Models\Publication');
     }
+
+    /**
+     * Defines a relationship with BookCopy Model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function copies() {
+        return $this->hasMany('App\Models\BookCopy');
+    }
 }

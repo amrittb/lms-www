@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder {
         UsersTableSeeder::class,
         PublicationsTableSeeder::class,
         BooksTableSeeder::class,
+        BookCopiesTableSeeder::class
     ];
 
     /**
