@@ -19,28 +19,39 @@
 
                 <strong>Copies: </strong> <br />
 
-                <a href="#" class="btn btn-primary">Add Another Copy</a>
+                <form action="{{ route('books.copies.store',['books' => $book->id]) }}" method="POST">
+                    {{ csrf_field() }}
 
-                <div class="table-responsive">
-                    <table class="table table-stripped">
-                        <thead>
-                            <tr>
-                                <th>Copy Id</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($book->copies as $copy)
+                    <div class="form-group form-inline">
+                        <input type="numeric" name="copy_id" class="form-control" style="max-width:200px;" placeholder="Copy Id">
+                        <input type="submit" value="Add Another Copy" class="btn btn-primary">
+                    </div>
+                </form>
+
+                @if(count($book->copies))
+                    <div class="table-responsive">
+                        <table class="table table-stripped">
+                            <thead>
                                 <tr>
-                                    <td>{{ $copy->copy_id }}</td>
-                                    <td>Status</td>
-                                    <td>Actions</td>
+                                    <th>Copy Id</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                @foreach($book->copies as $copy)
+                                    <tr>
+                                        <td>{{ $copy->copy_id }}</td>
+                                        <td>Status</td>
+                                        <td>Actions</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    There are no copies for this book. Add at least one.
+                @endif
             </div>
         </div>
     </div>
