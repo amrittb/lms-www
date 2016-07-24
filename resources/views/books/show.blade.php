@@ -16,7 +16,9 @@
                 <p>
                     <strong>Publication: </strong> {{ $book->publication_name }}
                 </p>
-
+                <p>
+                    <strong>Category: </strong> {{ $book->category_name }}
+                </p>
                 <strong>Copies: </strong> <br />
 
                 @include('partials.messagebag')

@@ -18,6 +18,7 @@
                                     <th>Isbn</th>
                                     <th>Edition</th>
                                     <th>Publication</th>
+                                    <th>Category</th>
                                     <th>No of Copies</th>
                                     <th>Actions</th>
                                 </tr>
@@ -30,6 +31,7 @@
                                         <td>{{ $book->isbn }}</td>
                                         <td>{{ $book->edition }} Edition</td>
                                         <td>{{ $book->publication_name }}</td>
+                                        <td>{{ $book->category_name }}</td>
                                         <td>{{ $book->copy_count }}</td>
                                         <td>
                                             <a href="{{ route('books.show',['books' => $book->id]) }}" class="btn btn-primary">View Book</a>

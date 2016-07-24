@@ -21,10 +21,12 @@ class BooksController extends Controller {
                                     books.created_at,
                                     books.publication_id,
                                     publications.publication_name,
+                                    book_categories.category_name,
                                     count(copy_id) as copy_count
                                 FROM book_copies
                                 JOIN books ON books.id = book_copies.book_id
                                 JOIN publications ON publications.id = books.publication_id 
+                                JOIN book_categories ON book_categories.id = books.category_id
                                 GROUP BY book_copies.book_id
                                 ORDER BY created_at DESC");
 
@@ -85,6 +87,7 @@ class BooksController extends Controller {
                 :isbn,
                 :edition,
                 :publication_id,
+                :category_id,
                 :created_at,
                 :updated_at)",
         $book);
@@ -112,6 +115,7 @@ class BooksController extends Controller {
                     books.isbn = :isbn,
                     books.edition = :edition,
                     books.publication_id = :publication_id,
+                    books.category_id = :category_id,
                     books.updated_at = :updated_at
                     WHERE books.id = :id",
         $book);
@@ -143,9 +147,12 @@ class BooksController extends Controller {
                                       books.isbn,
                                       books.edition,
                                       books.publication_id,
-                                      publications.publication_name
+                                      publications.publication_name,
+                                      books.category_id,
+                                      book_categories.category_name
                               FROM books 
                               JOIN publications ON publications.id = books.publication_id
+                              JOIN book_categories ON book_categories.id = books.category_id
                               WHERE books.id = :book_id", [
             'book_id' => intval($bookId)
         ]);
@@ -174,6 +181,7 @@ class BooksController extends Controller {
             'isbn' => $request->input('isbn'),
             'edition' => $request->input('edition'),
             'publication_id' => $request->input('publication_id'),
+            'category_id' => $request->input('category_id')
         ];
     }
 }

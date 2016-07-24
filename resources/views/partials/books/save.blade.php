@@ -64,6 +64,28 @@
     </div>
 </div>
 
+<div class="form-group{{ $errors->has('category_id') ? ' has-error' : '' }}">
+    <label for="category-id" class="col-md-4 control-label">Category</label>
+
+    <div class="col-md-6">
+        <select id="category-id" class="form-control" name="category_id">
+            @foreach($categories as $category)
+                <option value="{{ $category->id }}"
+                        {{ (intval(old('category_id')?:(isset($book)?$book->category_id:$categories->first()->id)) == $category->id)?'selected':'' }}
+                >
+                    {{ $category->category_name }}
+                </option>
+            @endforeach
+        </select>
+
+        @if ($errors->has('category_id'))
+            <span class="help-block">
+                <strong>{{ $errors->first('category_id') }}</strong>
+            </span>
+        @endif
+    </div>
+</div>
+
 <div class="form-group">
     <div class="col-md-6 col-md-offset-4">
         <button type="submit" class="btn btn-primary">
