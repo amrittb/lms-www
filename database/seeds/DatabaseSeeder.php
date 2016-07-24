@@ -13,8 +13,9 @@ class DatabaseSeeder extends Seeder {
         RolesTableSeeder::class,
         UsersTableSeeder::class,
         PublicationsTableSeeder::class,
+        BookCategoriesTableSeeder::class,
         BooksTableSeeder::class,
-        BookCopiesTableSeeder::class
+        BookCopiesTableSeeder::class,
     ];
 
     /**

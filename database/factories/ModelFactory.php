@@ -28,11 +28,22 @@ $factory->define(App\Models\Publication::class, function (Faker\Generator $faker
  */
 $factory->define(App\Models\Book::class, function(Faker\Generator $faker) {
     $publications = App\Models\Publication::lists('id');
+    $categories = App\Models\BookCategory::lists('id');
 
     return [
-       'book_name' => $faker->sentence(4),
-       'isbn' => $faker->isbn10,
-       'edition' => $faker->numberBetween(1,10),
-       'publication_id' => $faker->randomElement($publications->toArray())
+        'book_name' => $faker->sentence(4),
+        'isbn' => $faker->isbn10,
+        'edition' => $faker->numberBetween(1,10),
+        'publication_id' => $faker->randomElement($publications->toArray()),
+        'category_id' => $faker->randomElement($categories->toArray()),
     ];
+});
+
+/**
+ * Defines a Book Category Model factory
+ */
+$factory->define(App\Models\BookCategory::class,function(Faker\Generator $faker){
+   return [
+       'category_name' => $faker->word
+   ];
 });
