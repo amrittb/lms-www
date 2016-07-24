@@ -7,6 +7,8 @@ window.$ = window.jQuery = $;
 
 require('bootstrap-sass');
 
+require('./vendor/chosen');
+
 import DateTimePicker from "./components/FormDateTimePicker.vue";
 
 Vue.config.debug = true;
