@@ -23,7 +23,8 @@ class UsersController extends Controller {
                               users.role_id,
                               roles.role_name
                               FROM users
-                              JOIN roles ON roles.id = users.role_id');
+                              JOIN roles ON roles.id = users.role_id
+                              WHERE expires_at > NOW()');
 
         return view('users.index',compact('users'));
     }
@@ -35,6 +36,9 @@ class UsersController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
+        $user = $this->findUserById($id);
+
+        return view('users.show',compact('user'));
     }
 
     /**
@@ -66,5 +70,30 @@ class UsersController extends Controller {
      */
     public function destroy($id) {
 
+    }
+
+    /**
+     * Finds a user by Id
+     *
+     * @param $id
+     * @return mixed
+     */
+    private function findUserById($id) {
+        return DB::selectOne("SELECT
+                                users.id,
+                                users.first_name,
+                                users.middle_name,
+                                users.last_name,
+                                users.email,
+                                users.created_at,
+                                users.expires_at,
+                                users.role_id,
+                                roles.role_name
+                                FROM users
+                                JOIN roles ON roles.id = users.role_id
+                                WHERE users.id = :user_id
+                                AND expires_at > NOW()",[
+           'user_id' => $id
+        ]);
     }
 }
