@@ -21,4 +21,4 @@ Route::group(['prefix' => '/books/{books}/copies'],function() {
 
 Route::resource('/users','UsersController',['except' => ['create','store']]);
 
-Route::resource('/categories','BookCategoriesController',['only' => ['store','update','destroy']]);
+Route::resource('/categories','BookCategoriesController',['only' => ['index','store','destroy']]);
