@@ -46,7 +46,7 @@
     <label for="publication-id" class="col-md-4 control-label">Publication</label>
 
     <div class="col-md-6">
-        <select id="publication-id" class="form-control" name="publication_id">
+        <select id="publication-id" class="form-control chosen-select" name="publication_id">
             @foreach($publications as $publication)
                 <option value="{{ $publication->id }}"
                     {{ (intval(old('publication_id')?:(isset($book)?$book->publication_id:$publications->first()->id)) == $publication->id)?'selected':'' }}
@@ -68,7 +68,7 @@
     <label for="category-id" class="col-md-4 control-label">Category</label>
 
     <div class="col-md-6 form-inline">
-            <select id="category-id" class="form-control" name="category_id">
+            <select id="category-id" class="form-control chosen-select" name="category_id">
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}"
                             {{ (intval(old('category_id')?:(isset($book)?$book->category_id:$categories->first()->id)) == $category->id)?'selected':'' }}
@@ -86,7 +86,28 @@
             </span>
         @endif
     </div>
+</div>
 
+<div class="form-group{{ $errors->has('author_ids') ? ' has-error' : '' }}">
+    <label for="author-ids" class="col-md-4 control-label">Authors</label>
+
+    <div class="col-md-6 form-inline">
+        <select id="author-ids" class="form-control chosen-select" name="author_ids[]" multiple>
+            @foreach($authors as $author)
+                <option value="{{ $author->id }}">
+                    {{ $author->name }}
+                </option>
+            @endforeach
+        </select>
+        <div style="display:inline-block;">
+            <a href="#" target="_blank" class="btn btn-primary">Show Authors / Add author</a>
+        </div>
+        @if ($errors->has('author_ids'))
+            <span class="help-block">
+                <strong>{{ $errors->first('author_ids') }}</strong>
+            </span>
+        @endif
+    </div>
 </div>
 
 <div class="form-group">

@@ -20,3 +20,5 @@ Vue.component('date-picker',DateTimePicker);
 new Vue({
    el: 'body'
 });
+
+require('./main');
