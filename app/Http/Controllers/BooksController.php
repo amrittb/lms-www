@@ -32,6 +32,20 @@ class BooksController extends Controller {
     }
 
     /**
+     * Shows a book entry
+     *
+     * @param $bookId
+     * @return mixed
+     */
+    public function show($bookId) {
+        $book = $this->findBookFromId($bookId);
+
+        $book->copies = $this->getBookCopiesForBook($bookId);
+
+        return view('books.show',compact('book'));
+    }
+
+    /**
      * Shows a form to create a book.
      *
      * @return mixed
@@ -124,13 +138,30 @@ class BooksController extends Controller {
      * @return mixed
      */
     protected function findBookFromId($bookId) {
-        $book = DB::selectOne("SELECT * FROM books WHERE books.id = :book_id", [
+        return DB::selectOne("SELECT books.id,
+                                      books.book_name,
+                                      books.isbn,
+                                      books.edition,
+                                      books.publication_id,
+                                      publications.publication_name
+                              FROM books 
+                              JOIN publications ON publications.id = books.publication_id
+                              WHERE books.id = :book_id", [
             'book_id' => intval($bookId)
         ]);
-
-        return $book;
     }
 
+    /**
+     * Returns Book Copies for a book
+     *
+     * @param $bookId
+     * @return mixed
+     */
+    public function getBookCopiesForBook($bookId) {
+        return DB::select("SELECT copy_id FROM book_copies WHERE book_copies.book_id = :book_id",[
+            'book_id' => intval($bookId)
+        ]);
+    }
     /**
      * Resolves book input from request
      *
