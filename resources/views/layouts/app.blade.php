@@ -29,14 +29,6 @@
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
 
-                @if(Auth::check())
-                      <ul class="nav navbar-nav">
-                          <li><a href="{{ route('books.index') }}">Books</a></li>
-                          <li><a href="{{ route('books.create') }}">Create a Boook</a></li>
-                          <li><a href="{{ route('users.index') }}">Users</a></li>
-                      </ul>
-                @endif
-
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
@@ -44,9 +36,14 @@
                         <li><a href="{{ url('/login') }}">Login</a></li>
                         <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
+                        <li><a href="{{ route('books.index') }}">Books</a></li>
+                        <li><a href="{{ route('users.index') }}">Users</a></li>
+                        <li><a href="{{ route('authors.index') }}">Authors</a></li>
+                        <li><a href="{{ route('categories.index') }}">Categories</a></li>
+                        <li><a href="{{ route('books.create') }}">Create a Boook</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="caret"></span>
+                                Howdy! {{ Auth::user()->first_name }} <span class="caret"></span>
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
