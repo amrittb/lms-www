@@ -94,8 +94,6 @@
     <div class="col-md-6 form-inline">
         <select id="author-ids" class="form-control chosen-select" name="author_ids[]" multiple>
             <?php
-//                $author_ids = old('author_ids')?:isset($book)?$book->authors->map(function($author){return $author->id;})->toArray():[];
-
                 $author_ids = [];
 
                 if(old('author_ids')){
@@ -115,7 +113,7 @@
             @endforeach
         </select>
         <div style="display:inline-block;">
-            <a href="#" target="_blank" class="btn btn-primary">Show Authors / Add author</a>
+            <a href="{{ route('authors.index') }}" target="_blank" class="btn btn-primary">Show Authors / Add author</a>
         </div>
         @if ($errors->has('author_ids'))
             <span class="help-block">
