@@ -24,8 +24,8 @@ class BooksController extends Controller {
                                     publications.publication_name,
                                     book_categories.category_name,
                                     count(copy_id) as copy_count
-                                FROM book_copies
-                                JOIN books ON books.id = book_copies.book_id
+                                FROM books
+                                LEFT JOIN book_copies ON books.id = book_copies.book_id
                                 JOIN publications ON publications.id = books.publication_id 
                                 JOIN book_categories ON book_categories.id = books.category_id
                                 GROUP BY book_copies.book_id
@@ -99,16 +99,21 @@ class BooksController extends Controller {
             'updated_at' => Carbon::now()->toDateTimeString(),
         ]);
 
-        DB::insert("INSERT INTO books VALUES (
-                NULL,
-                :book_name,
-                :isbn,
-                :edition,
-                :publication_id,
-                :category_id,
-                :created_at,
-                :updated_at)",
-        $book);
+//        DB::insert("INSERT INTO books VALUES (
+//                NULL,
+//                :book_name,
+//                :isbn,
+//                :edition,
+//                :publication_id,
+//                :created_at,
+//                :updated_at,
+//                :category_id
+//          )",
+//        $book);
+
+        $bookId = DB::table('books')->insertGetId($book);
+
+        $this->syncBookAuthors($bookId,$request->input('author_ids'));
 
         return redirect()->route('books.index')->with('message','The Book has been created');
     }

@@ -93,7 +93,19 @@
 
     <div class="col-md-6 form-inline">
         <select id="author-ids" class="form-control chosen-select" name="author_ids[]" multiple>
-            <?php $author_ids = old('author_ids')?:$book->authors->map(function($author){return $author->id;})->toArray(); ?>
+            <?php
+//                $author_ids = old('author_ids')?:isset($book)?$book->authors->map(function($author){return $author->id;})->toArray():[];
+
+                $author_ids = [];
+
+                if(old('author_ids')){
+                    $author_ids = old('author_ids');
+                } else if(isset($book)){
+                    $author_ids = $book->authors->map(function($author){
+                        return $author->id;
+                    })->toArray();
+                }
+            ?>
             @foreach($authors as $author)
                 <option value="{{ $author->id }}"
                         {{ in_array($author->id,$author_ids)?"selected":"" }}
