@@ -28,6 +28,15 @@
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
+
+                @if(Auth::check())
+                      <ul class="nav navbar-nav">
+                          <li><a href="{{ route('books.index') }}">Books</a></li>
+                          <li><a href="{{ route('books.create') }}">Create a Boook</a></li>
+                          <li><a href="{{ route('users.index') }}">Users</a></li>
+                      </ul>
+                @endif
+
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
