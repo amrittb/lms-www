@@ -1,6 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
+    @if(session('fine'))
+        <div class="modal fade" id="fine-modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Receive Fine</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>You should receive Rs. {{ session('fine') }} as fine for the latest transaction.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <script>
+            window.onload =function() {
+                $("#fine-modal").modal();
+            };
+        </script>
+    @endif
+
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
@@ -29,6 +54,8 @@
                         <strong>Status: </strong> {{ ($bookCopy->is_issued == 0)?"Available":"Issued" }}
                     </p>
                 </div>
+
+                @include('partials.messagebag')
 
                 <form action="{{ route('books.copies.issue',['books' => $bookCopy->id,'copies' => $bookCopy->copy_id]) }}" method="POST" class="form-horizontal">
                     {{ csrf_field() }}
@@ -73,6 +100,9 @@
                         </button>
                     </form>
                 @endif
+
+                <br>
+                <br>
 
                 <div class="col-md-12">
                     @if(count($transactions))

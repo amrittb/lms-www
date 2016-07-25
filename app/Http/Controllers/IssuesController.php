@@ -45,15 +45,17 @@ class IssuesController extends Controller {
     public function issue($bookId, $copyId, Request $request) {
         $input = $this->resolveInput($bookId, $copyId, $request);
 
+        $fine = 0;
+
         if($request->input('parent_id')){
-            $this->generateFine($input['parent_id']);
+            $fine = $this->generateFine($input['parent_id']);
         }
 
         $this->createTransaction($input);
 
         $this->updateBookCopyForIssue($bookId, $copyId,true);
 
-        return redirect()->back()->with('message','Book issued successfully');
+        return $this->responseWithFine('Book issued successfully',$fine);
     }
 
     /**
@@ -65,13 +67,13 @@ class IssuesController extends Controller {
      * @return mixed
      */
     public function returnBook($bookId,$copyId,$transactionId) {
-        $this->generateFine($transactionId);
+        $fine = $this->generateFine($transactionId);
 
         $this->markTransactionComplete($transactionId);
 
         $this->updateBookCopyForIssue($bookId,$copyId,false);
 
-        return redirect()->back()->with('message','Book returned successfully');
+        return $this->responseWithFine('Book returned successfully',$fine);
     }
 
     /**
@@ -182,11 +184,12 @@ class IssuesController extends Controller {
      * Generates fine for given transaction
      *
      * @param $transactionId
+     * @return int
      */
     protected function generateFine($transactionId) {
         $deadlineAt = $this->findTransactionById($transactionId)->deadline_at;
 
-        $this->calculateFine($transactionId, Carbon::parse($deadlineAt));
+        return $this->calculateFine($transactionId, Carbon::parse($deadlineAt));
     }
 
     /**
@@ -206,9 +209,10 @@ class IssuesController extends Controller {
      *
      * @param $transactionId
      * @param Carbon $deadlineAt
+     * @return int
      */
     protected function calculateFine($transactionId, Carbon $deadlineAt) {
-        $days = $deadlineAt->diffInDays(Carbon::now());
+        $days = $deadlineAt->diffInDays(Carbon::now(),false);
 
         if($days > 0){
             $fine = self::FINE_PER_DAY * $days;
@@ -217,7 +221,11 @@ class IssuesController extends Controller {
                 'fine_amt' => $fine,
                 'transaction_id' => $transactionId
             ]);
+
+            return $fine;
         }
+
+        return 0;
     }
 
     /**
@@ -267,5 +275,22 @@ class IssuesController extends Controller {
             'book_id' => $bookId,
             'copy_id' => $copyId
         ]);
+    }
+
+    /**
+     * Returns a response
+     *
+     * @param $message
+     * @param $fine
+     * @return mixed
+     */
+    protected function responseWithFine($message, $fine) {
+        $response = redirect()->back()->with('message', $message);
+
+        if ($fine > 0) {
+            return $response->with('fine', $fine);
+        }
+
+        return $response;
     }
 }
