@@ -138,6 +138,8 @@ class BooksController extends Controller {
                     WHERE books.id = :id",
         $book);
 
+        $this->syncBookAuthors($bookId,$request->input('author_ids'));
+
         return redirect()->back()->with('message','Book has been successfully updaed');
     }
 
@@ -179,12 +181,13 @@ class BooksController extends Controller {
             throw new ModelNotFoundException();
         }
 
-        $book->authors = DB::select("SELECT authors.name
+        $book->authors = collect(DB::select("SELECT authors.id,
+                                            authors.name
                                     FROM author_book
                                     JOIN authors ON authors.id = author_book.author_id
                                     WHERE author_book.book_id = :book_id",[
             'book_id' => $bookId
-        ]);
+        ]));
 
         return $book;
     }
@@ -214,5 +217,29 @@ class BooksController extends Controller {
             'publication_id' => $request->input('publication_id'),
             'category_id' => $request->input('category_id')
         ];
+    }
+
+    /**
+     * Syncs Book Authors
+     *
+     * @param $bookId
+     * @param $author_ids
+     */
+    private function syncBookAuthors($bookId, $author_ids) {
+        DB::delete("DELETE FROM author_book WHERE author_book.book_id = :book_id",[
+            'book_id' => $bookId
+        ]);
+
+        $sql = "INSERT INTO author_book VALUES";
+
+        $insertions = [];
+
+        foreach($author_ids as $id) {
+            array_push($insertions,"({$id},{$bookId})");
+        }
+
+        $sql .= join(", ",$insertions);
+
+        DB::insert($sql);
     }
 }

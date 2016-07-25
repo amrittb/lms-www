@@ -21,7 +21,8 @@ class SaveBookRequest extends Request
             'book_name' => 'required|min:10|max:255',
             'isbn' => 'required|isbn'.(($this->method() != "PATCH")?"|unique:books":""),
             'edition' => 'required|integer|min:1',
-            'publication_id' => 'required|integer|exists:publications,id'
+            'publication_id' => 'required|integer|exists:publications,id',
+            'author_ids' => 'required',
         ];
     }
 }

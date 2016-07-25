@@ -93,8 +93,11 @@
 
     <div class="col-md-6 form-inline">
         <select id="author-ids" class="form-control chosen-select" name="author_ids[]" multiple>
+            <?php $author_ids = old('author_ids')?:$book->authors->map(function($author){return $author->id;})->toArray(); ?>
             @foreach($authors as $author)
-                <option value="{{ $author->id }}">
+                <option value="{{ $author->id }}"
+                        {{ in_array($author->id,$author_ids)?"selected":"" }}
+                    >
                     {{ $author->name }}
                 </option>
             @endforeach
