@@ -1,0 +1,13 @@
+.transactions-table {
+    
+    &__row {
+        
+        &--new-issue {
+            background: #DDD;
+        }
+        
+        &--renewed-issue {
+            background: #EEE;
+        }
+    }
+}

@@ -60,8 +60,10 @@
                                 @foreach($book->copies as $copy)
                                     <tr>
                                         <td>{{ $copy->copy_id }}</td>
-                                        <td>Status</td>
+                                        <td>{{ ($copy->is_issued == 0)?"Available":"Issued" }}</td>
                                         <td>
+                                            <a href="{{ route('books.copies.createissue',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-primary">Show Issues</a>
+
                                             <form action="{{ route('books.copies.destroy',['books' => $book->id,'copies' => $copy->copy_id]) }}" method="post">
                                                 {{ csrf_field() }}
 

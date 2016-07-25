@@ -204,7 +204,7 @@ class BooksController extends Controller {
      * @return mixed
      */
     public function getBookCopiesForBook($bookId) {
-        return DB::select("SELECT copy_id FROM book_copies WHERE book_copies.book_id = :book_id",[
+        return DB::select("SELECT copy_id, is_issued FROM book_copies WHERE book_copies.book_id = :book_id",[
             'book_id' => intval($bookId)
         ]);
     }
