@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTranscationsTable extends Migration  {
+class CreateTransactionsTable extends Migration  {
 
     /**
      * Run the migrations.
@@ -11,7 +11,7 @@ class CreateTranscationsTable extends Migration  {
      * @return void
      */
     public function up() {
-        DB::statement("CREATE TABLE transcations (
+        DB::statement("CREATE TABLE transactions (
                         id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
                         member_id INT(10) UNSIGNED NOT NULL,
                         librarian_id INT(10) UNSIGNED NOT NULL,
