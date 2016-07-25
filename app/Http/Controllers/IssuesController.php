@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 class IssuesController extends Controller {
 
     /**
+     * Fine amount per day
+     */
+    const FINE_PER_DAY = 1;
+
+    /**
      * Book issue day limit
      */
     const BOOK_ISSUE_DAY_LIMIT = 14;
@@ -40,6 +45,10 @@ class IssuesController extends Controller {
     public function issue($bookId, $copyId, Request $request) {
         $input = $this->resolveInput($bookId, $copyId, $request);
 
+        if($request->input('parent_id')){
+            $this->generateFine($input['parent_id']);
+        }
+
         $this->createTransaction($input);
 
         $this->updateBookCopyForIssue($bookId, $copyId,true);
@@ -56,6 +65,8 @@ class IssuesController extends Controller {
      * @return mixed
      */
     public function returnBook($bookId,$copyId,$transactionId) {
+        $this->generateFine($transactionId);
+
         $this->markTransactionComplete($transactionId);
 
         $this->updateBookCopyForIssue($bookId,$copyId,false);
@@ -115,9 +126,11 @@ class IssuesController extends Controller {
                                                     transactions.deadline_at,
                                                     transactions.completed_at,
                                                     transactions.is_completed,
-                                                    transactions.parent_id
+                                                    transactions.parent_id,
+                                                    fines.fine_amt
                                             FROM transactions
                                             JOIN books ON books.id = transactions.book_id
+                                            LEFT JOIN fines ON fines.transaction_id = transactions.id
                                             JOIN users as members ON members.id = transactions.member_id
                                             JOIN users as librarians ON librarians.id = transactions.librarian_id
                                             WHERE transactions.book_id = :book_id
@@ -163,6 +176,48 @@ class IssuesController extends Controller {
             'is_completed' => 0,
             'parent_id' => $request->input('parent_id') ?: null
         ];
+    }
+
+    /**
+     * Generates fine for given transaction
+     *
+     * @param $transactionId
+     */
+    protected function generateFine($transactionId) {
+        $deadlineAt = $this->findTransactionById($transactionId)->deadline_at;
+
+        $this->calculateFine($transactionId, Carbon::parse($deadlineAt));
+    }
+
+    /**
+     * Finds a transaction by id
+     *
+     * @param $transactionId
+     * @return mixed
+     */
+    protected function findTransactionById($transactionId) {
+        return DB::selectOne("SELECT deadline_at FROM transactions WHERE transactions.id = :transaction_id", [
+            'transaction_id' => $transactionId
+        ]);
+    }
+
+    /**
+     * Creates a fine entry
+     *
+     * @param $transactionId
+     * @param Carbon $deadlineAt
+     */
+    protected function calculateFine($transactionId, Carbon $deadlineAt) {
+        $days = $deadlineAt->diffInDays(Carbon::now());
+
+        if($days > 0){
+            $fine = self::FINE_PER_DAY * $days;
+
+            DB::insert("INSERT INTO fines VALUES(NULL,:fine_amt,:transaction_id)",[
+                'fine_amt' => $fine,
+                'transaction_id' => $transactionId
+            ]);
+        }
     }
 
     /**

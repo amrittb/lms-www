@@ -87,6 +87,7 @@
                                     <th>Issued At</th>
                                     <th>Deadline At</th>
                                     <th>Issue status</th>
+                                    <th>Fine</th>
                                     <th>Status</th>
                                 </tr>
                                 </thead>
@@ -100,6 +101,7 @@
                                         <td>{{ \Carbon\Carbon::parse($transaction->issued_at)->diffForHumans() }}</td>
                                         <td>{{ \Carbon\Carbon::parse($transaction->deadline_at)->diffForHumans() }}</td>
                                         <td>{{ ($transaction->parent_id == null)?"First Issue":"Renew" }}</td>
+                                        <td>Rs. {{ ($transaction->fine_amt)?:"0.0" }}</td>
                                         <td>{{ ($transaction->is_completed == 1)?"Completed":"Not Completed" }}<br />
                                             <small>
                                                 {{ ($transaction->is_completed == 1)?\Carbon\Carbon::parse($transaction->completed_at)->diffForHumans():"" }}
