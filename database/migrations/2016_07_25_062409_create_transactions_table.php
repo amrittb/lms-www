@@ -19,7 +19,7 @@ class CreateTransactionsTable extends Migration  {
                         copy_id INT(10) UNSIGNED NOT NULL,
                         issued_at TIMESTAMP NOT NULL,
                         deadline_at TIMESTAMP NOT NULL,
-                        completed_at TIMESTAMP,
+                        completed_at TIMESTAMP NULL,
                         is_completed TINYINT(1) NOT NULL DEFAULT 0,
                         parent_id INT(10),
                         PRIMARY KEY(member_id,librarian_id,book_id,copy_id,issued_at),

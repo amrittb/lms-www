@@ -1,8 +1,8 @@
 <?php namespace App\Http\Controllers;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use App\Http\Requests;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class IssuesController extends Controller {
@@ -12,8 +12,66 @@ class IssuesController extends Controller {
      */
     const BOOK_ISSUE_DAY_LIMIT = 14;
 
+    /**
+     * Show form to issue a book
+     *
+     * @param $bookId
+     * @param $copyId
+     * @return mixed
+     */
     public function create($bookId,$copyId) {
-        $bookCopy = DB::selectOne("SELECT books.id,
+        $bookCopy = $this->getBookCopy($bookId, $copyId);
+
+        $transactions = $this->getTransactions($bookId, $copyId);
+
+        $members = $this->getMembers();
+
+        return view('books.issues.create',compact('bookCopy','members','transactions'));
+    }
+
+    /**
+     * Issues a book copy to a user
+     *
+     * @param $bookId
+     * @param $copyId
+     * @param Request $request
+     * @return mixed
+     */
+    public function issue($bookId, $copyId, Request $request) {
+        $input = $this->resolveInput($bookId, $copyId, $request);
+
+        $this->createTransaction($input);
+
+        $this->updateBookCopyForIssue($bookId, $copyId,true);
+
+        return redirect()->back()->with('message','Book issued successfully');
+    }
+
+    /**
+     * Returns a book
+     *
+     * @param $bookId
+     * @param $copyId
+     * @param $transactionId
+     * @return mixed
+     */
+    public function returnBook($bookId,$copyId,$transactionId) {
+        $this->markTransactionComplete($transactionId);
+
+        $this->updateBookCopyForIssue($bookId,$copyId,false);
+
+        return redirect()->back()->with('message','Book returned successfully');
+    }
+
+    /**
+     * Returns a book copy
+     *
+     * @param $bookId
+     * @param $copyId
+     * @return mixed
+     */
+    protected function getBookCopy($bookId, $copyId) {
+        return DB::selectOne("SELECT books.id,
                                       books.book_name,
                                       books.isbn,
                                       books.edition,
@@ -28,12 +86,20 @@ class IssuesController extends Controller {
                                 JOIN publications ON publications.id = books.publication_id
                                 JOIN book_categories ON book_categories.id = books.category_id
                                 WHERE book_copies.book_id = :book_id 
-                                AND book_copies.copy_id = :copy_id",[
+                                AND book_copies.copy_id = :copy_id", [
             'book_id' => $bookId,
             'copy_id' => $copyId
         ]);
+    }
 
-        $transactions = collect(DB::select("SELECT transactions.id,
+    /**
+     * Return transactions for the given book and its copy
+     * @param $bookId
+     * @param $copyId
+     * @return mixed
+     */
+    protected function getTransactions($bookId, $copyId) {
+        return collect(DB::select("SELECT transactions.id,
                                                     transactions.member_id,
                                                     members.first_name as member_fname,
                                                     members.middle_name as member_mname,
@@ -56,32 +122,37 @@ class IssuesController extends Controller {
                                             JOIN users as librarians ON librarians.id = transactions.librarian_id
                                             WHERE transactions.book_id = :book_id
                                             AND transactions.copy_id = :copy_id
-                                            ORDER BY issued_at DESC",[
+                                            ORDER BY issued_at DESC", [
             'book_id' => $bookId,
             'copy_id' => $copyId
         ]));
+    }
 
-        $members = DB::select("SELECT users.id,
+    /**
+     * Returns member users
+     *
+     * @return mixed
+     */
+    protected function getMembers() {
+        return collect(DB::select("SELECT users.id,
                                     users.first_name,
                                     users.middle_name,
                                     users.last_name
                                 FROM users
                                 JOIN roles ON roles.id = users.role_id
-                                WHERE roles.role_name = 'Member'");
-
-        return view('books.issues.create',compact('bookCopy','members','transactions'));
+                                WHERE roles.role_name = 'Member'"));
     }
 
     /**
-     * Issues a book copy to a user
+     * Resolves transaction input from the request
      *
      * @param $bookId
      * @param $copyId
      * @param Request $request
-     * @return mixed
+     * @return array
      */
-    public function issue($bookId, $copyId, Request $request) {
-        $input = [
+    protected function resolveInput($bookId, $copyId, Request $request) {
+        return [
             'member_id' => $request->input('member_id'),
             'librarian_id' => \Auth::user()->id,
             'book_id' => $bookId,
@@ -90,9 +161,16 @@ class IssuesController extends Controller {
             'deadline_at' => Carbon::now()->addDays(self::BOOK_ISSUE_DAY_LIMIT)->toDateTimeString(),
             'completed_at' => null,
             'is_completed' => 0,
-            'parent_id' => $request->input('parent_id')?:null
+            'parent_id' => $request->input('parent_id') ?: null
         ];
+    }
 
+    /**
+     * Creates a transaction record
+     *
+     * @param $input
+     */
+    protected function createTransaction($input) {
         DB::insert("INSERT INTO transactions VALUES(
               NULL,
               :member_id,
@@ -104,29 +182,22 @@ class IssuesController extends Controller {
               :completed_at,
               :is_completed,
               :parent_id
-        )",$input);
-
-        $this->updateBookCopyForIssue($bookId, $copyId,true);
-
-        return redirect()->back()->with('message','Book issued successfully');
+        )", $input);
     }
 
     /**
-     * Returns a book
+     * Marks transaction complete
      *
-     * @param $bookId
-     * @param $copyId
      * @param $transactionId
-     * @return mixed
      */
-    public function returnBook($bookId,$copyId,$transactionId) {
-        DB::update("UPDATE transactions SET transactions.is_completed = 1, transactions.completed_at = NOW() WHERE transactions.id = :transaction_id",[
-            'transaction_id' => $transactionId
+    protected function markTransactionComplete($transactionId) {
+        DB::update("UPDATE transactions 
+                    SET transactions.is_completed = 1,
+                    transactions.completed_at = :completed_at
+                    WHERE transactions.id = :transaction_id", [
+            'completed_at' => Carbon::now()->toDateTimeString(),
+            'transaction_id' => intval($transactionId)
         ]);
-
-        $this->updateBookCopyForIssue($bookId,$copyId,false);
-
-        return redirect()->back()->with('message','Book returned successfully');
     }
 
     /**
