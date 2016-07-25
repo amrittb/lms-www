@@ -4,7 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="text--center">Book list</h3>
+                <h3 class="text--center">Book list
+                    <small>
+                            <a href="{{ route('books.create') }}">Create a new book</a>
+                    </small>
+                </h3>
 
                 @include('partials.messagebag')
 
