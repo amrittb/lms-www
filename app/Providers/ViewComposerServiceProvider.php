@@ -23,6 +23,14 @@ class ViewComposerServiceProvider extends ServiceProvider {
         view()->composer(
             'partials.books.save','App\Http\ViewComposers\AuthorsComposer'
         );
+
+        view()->composer(
+            'partials.books.copies.save','App\Http\ViewComposers\BookProvidersComposer'
+        );
+
+        view()->composer(
+            'partials.books.copies.save','App\Http\ViewComposers\ProvisionCategoriesComposer'
+        );
     }
 
     /**

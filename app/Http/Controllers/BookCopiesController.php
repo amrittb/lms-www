@@ -15,9 +15,11 @@ class BookCopiesController extends Controller {
      * @return mixed
      */
     public function store($bookId,Request $request){
-        DB::insert("INSERT INTO book_copies VALUES(:copy_id,:book_id)",[
+        DB::insert("INSERT INTO book_copies VALUES(:copy_id,:book_id,0,:provider_id,:provision_category_id)",[
             'copy_id' => $request->input('copy_id'),
-            'book_id' => $bookId
+            'book_id' => $bookId,
+            'provider_id' => $request->input('provider_id'),
+            'provision_category_id' => $request->input('provision_category_id'),
         ]);
 
         return redirect()->back()->with('message','Book Copy added successfully');

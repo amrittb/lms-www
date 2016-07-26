@@ -33,18 +33,17 @@
                         No Authors on this book.
                     @endif
                 </p>
-                <strong>Copies: </strong> <br />
 
                 @include('partials.messagebag')
 
-                <form action="{{ route('books.copies.store',['books' => $book->id]) }}" method="POST">
-                    {{ csrf_field() }}
-
-                    <div class="form-group form-inline">
-                        <input type="numeric" name="copy_id" class="form-control" style="max-width:200px;" placeholder="Copy Id">
-                        <input type="submit" value="Add Another Copy" class="btn btn-primary">
+                <div class="row">
+                    <div class="jumbotron">
+                        @include('partials.books.copies.save')
                     </div>
-                </form>
+                </div>
+
+                <br>
+                <strong>Copies: </strong> <br />
 
                 @if(count($book->copies))
                     <div class="table-responsive">
