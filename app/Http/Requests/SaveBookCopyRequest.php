@@ -19,7 +19,9 @@ class SaveBookCopyRequest extends Request {
      */
     public function rules() {
         return [
-            'copy_id' => 'required'
+            'copy_id' => 'required|integer',
+            'provider_id' => 'required',
+            'provision_category_id' => 'required'
         ];
     }
 }
