@@ -52,6 +52,7 @@
                             <thead>
                                 <tr>
                                     <th>Copy Id</th>
+                                    <th>Provider</th>
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -60,6 +61,13 @@
                                 @foreach($book->copies as $copy)
                                     <tr>
                                         <td>{{ $copy->copy_id }}</td>
+                                        <td>
+                                            {{ $copy->provider_name?:'N/A' }}
+                                            <br>
+                                            <small>
+                                                [{{ $copy->provision_category_name?:'N/A' }}]
+                                            </small>
+                                        </td>
                                         <td>{{ ($copy->is_issued == 0)?"Available":"Issued" }}</td>
                                         <td>
                                             <a href="{{ route('books.copies.createissue',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-primary">Show Issues</a>
