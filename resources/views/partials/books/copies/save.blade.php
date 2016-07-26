@@ -63,6 +63,10 @@
                 </span>
             @endif
         </div>
+
+        <div class="col-md-3">
+            <a href="{{ route('provisioncategories.index') }}" class="btn btn-primary">Add New Provision Category</a>
+        </div>
     </div>
 
     <div class="row">

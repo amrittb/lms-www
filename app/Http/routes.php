@@ -43,3 +43,5 @@ Route::resource('/categories','BookCategoriesController',['only' => ['index','st
 Route::resource('/issues','IssuesController',['only' => 'index']);
 
 Route::resource('/providers','BookProvidersController',['except' => ['create','show']]);
+
+Route::resource('/provisioncategories','ProvisionCategoriesController',['except' => ['create','show']]);
