@@ -57,3 +57,8 @@ Route::resource('/issues','IssuesController',['only' => 'index']);
 Route::resource('/providers','BookProvidersController',['except' => ['create','show']]);
 
 Route::resource('/provisioncategories','ProvisionCategoriesController',['except' => ['create','show']]);
+
+Route::get('/search',[
+    'uses' => 'SearchController@index',
+    'as' => 'search.index'
+]);

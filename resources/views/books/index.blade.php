@@ -26,7 +26,6 @@
                                     <th>Edition</th>
                                     <th>Publication</th>
                                     <th>Category</th>
-                                    <th>Authors</th>
                                     <th>No of Copies</th>
                                     <th>Actions</th>
                                 </tr>
@@ -40,13 +39,6 @@
                                         <td>{{ ordinal_suffix(intval($book->edition)) }} Edition</td>
                                         <td>{{ $book->publication_name }}</td>
                                         <td>{{ $book->category_name }}</td>
-                                        <td>
-                                            <ul>
-                                                @foreach($book->authors as $author)
-                                                    <li>{{ $author->name }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </td>
                                         <td>{{ $book->copy_count }}</td>
                                         <td>
                                             <a href="{{ route('books.show',['books' => $book->id]) }}" class="btn btn-primary btn-block">View</a><br />

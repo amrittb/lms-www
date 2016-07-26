@@ -15,7 +15,7 @@ class BooksController extends Controller {
      * @return mixed
      */
     public function index() {
-        $books = collect(DB::select("SELECT books.id,
+        $books = DB::select("SELECT books.id,
                                     books.book_name,
                                     books.isbn,
                                     books.edition,
@@ -29,30 +29,7 @@ class BooksController extends Controller {
                                 JOIN publications ON publications.id = books.publication_id 
                                 JOIN book_categories ON book_categories.id = books.category_id
                                 GROUP BY book_copies.book_id
-                                ORDER BY created_at DESC"));
-
-        if(count($books)){
-            $bookIds = $books->map(function($item){
-                return $item->id;
-            });
-
-            $authors = collect(DB::select("SELECT author_book.book_id,
-                                      authors.id,
-                                      authors.name
-                                FROM author_book
-                                JOIN authors ON authors.id = author_book.author_id
-                                WHERE author_book.book_id IN (".join(',',$bookIds->toArray()).")"));
-
-            $books->each(function($book) use ($authors) {
-                $book->authors = $authors->filter(function($author) use ($book){
-                    return $book->id == $author->book_id;
-                });
-            });
-        } else {
-            $books->each(function($book) {
-                $book->authors = collect([]);
-            });
-        }
+                                ORDER BY created_at DESC");
 
         return view('books.index',compact('books'));
     }

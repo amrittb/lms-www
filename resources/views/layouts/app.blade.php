@@ -35,6 +35,19 @@
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
                     @else
+                        <form action="{{ route('search.index') }}" class="navbar-form navbar-left">
+                            <div class="form-group form-inline">
+                                <input type="text" name="q" class="form-control" placeholder="Search by...">
+
+                                <select name="by" class="form-control">
+                                    <option value="book_title">Book Title</option>
+                                    <option value="book_id">Book Id</option>
+                                    <option value="isbn">ISBN</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-warning">Search</button>
+                        </form>
+
                         <li><a href="{{ route('books.index') }}">Books</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entities <span class="caret"></span></a>
