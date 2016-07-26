@@ -56,3 +56,23 @@ $factory->define(App\Models\Author::class,function(Faker\Generator $faker) {
        'name' => $faker->name
     ];
 });
+
+/**
+ * Define a Provision Category Model Factory
+ */
+$factory->define(App\Models\ProvisionCategory::class,function(Faker\Generator $faker) {
+    return [
+        'category_name' => $faker->word
+    ];
+});
+
+/**
+ * Define a Book Provider Model Factory
+ */
+$factory->define(App\Models\BookProvider::class,function(Faker\Generator $faker) {
+    return [
+        'provider_name' => $faker->name,
+        'contact_no' => $faker->phoneNumber,
+        'contact_pname' => $faker->name
+    ];
+});

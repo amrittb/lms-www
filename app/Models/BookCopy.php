@@ -26,4 +26,22 @@ class BookCopy extends Model {
     public function book() {
         return $this->belongsTo('App\Models\Book');
     }
+
+    /**
+     * Defines a relationship with Book Provider Model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function provider() {
+        return $this->belongsTo('App\Models\BookProvider','provider_id');
+    }
+
+    /**
+     * Defines a relationship with ProvisionCategory Model
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function provisionCategory() {
+        return $this->belongsTo('App\Models\ProvisionCategory','provision_category_id');
+    }
 }
