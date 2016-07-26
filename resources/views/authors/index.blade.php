@@ -4,19 +4,20 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="text--center">Authors list</h3>
+                <h2 class="text--center">Authors</h2>
 
-                <form action="{{ route('authors.store') }}" method="POST">
-                    {{ csrf_field() }}
-
-                    <div class="form-group form-inline">
-                        <input type="text" placeholder="Author Name" name="author_name"
-                               class="form-control">
-                        <input type="submit" value="Add a author" class="btn btn-primary">
-                    </div>
-                </form>
-                
                 @include('partials.messagebag')
+
+                <div class="row">
+                    <div class="jumbotron">
+                        <h3 class="text--center">Create a new author</h3><br>
+                        <form action="{{ route('authors.store') }}" method="POST">
+                            @include('partials.authors.save')
+                        </form>
+                    </div>
+                </div>
+
+                <h3 class="text--center">Authors List</h3>
 
                 @if(count($authors))
                     <div class="table-responsive">
@@ -34,12 +35,13 @@
                                     <td>{{ $author->id }}</td>
                                     <td>{{ $author->name }}</td>
                                     <td>
+                                        {{--<a href="{{ route('authors.edit',['authors' => $author->id]) }}" class="btn btn-warning">Edit</a>--}}
                                         <form action="{{ route('authors.destroy',['authors' => $author->id]) }}" method="POST" style="display: inline-block;">
                                             {{ csrf_field() }}
 
                                             <input type="hidden" name="_method" value="delete">
 
-                                            <input type="submit" class="btn btn-danger" value="Delete?">
+                                            <input type="submit" class="btn btn-danger" value="Delete">
                                         </form>
                                     </td>
                                 </tr>

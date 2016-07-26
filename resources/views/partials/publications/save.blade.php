@@ -6,7 +6,7 @@
     <div class="col-md-6">
         <input id="publication-name" type="text" class="form-control" name="publication_name" placeholder="Name of the publication" value="{{ old('publication_name')?:(isset($publication)?$publication->publication_name:'') }}">
 
-        @if ($errors->has('book_name'))
+        @if ($errors->has('publication_name'))
             <span class="help-block">
                 <strong>{{ $errors->first('publication_name') }}</strong>
             </span>
