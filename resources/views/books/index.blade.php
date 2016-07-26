@@ -34,7 +34,7 @@
                                         <td>{{ $book->id }}</td>
                                         <td>{{ $book->book_name }}</td>
                                         <td>{{ $book->isbn }}</td>
-                                        <td>{{ $book->edition }} Edition</td>
+                                        <td>{{ ordinal_suffix(intval($book->edition)) }} Edition</td>
                                         <td>{{ $book->publication_name }}</td>
                                         <td>{{ $book->category_name }}</td>
                                         <td>

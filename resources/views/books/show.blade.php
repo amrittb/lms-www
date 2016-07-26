@@ -4,46 +4,54 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3>{{ $book->book_name }} <small><a href="{{ route('books.edit',['books' => $book->id]) }}">Edit?</a></small></h3>
-
-                <p>
-                    <strong>ISBN: </strong> {{ $book->isbn }}
-                </p>
-
-                <p>
-                    <strong>Edition: </strong> {{ $book->edition }}
-                </p>
-                <p>
-                    <strong>Publication: </strong> {{ $book->publication_name }}
-                </p>
-                <p>
-                    <strong>Category: </strong> {{ $book->category_name }}
-                </p>
-                <p>
-                    <strong>Authors: </strong>
-                    @if(count($book->authors))
-                        <ul style="list-style-type:none;">
-                            @foreach($book->authors as $author)
-                                <li>
-                                    {{  $author->name }}
-                                </li>
-                            @endforeach
-                        </ul>
-                    @else
-                        No Authors on this book.
-                    @endif
-                </p>
 
                 @include('partials.messagebag')
 
                 <div class="row">
                     <div class="jumbotron">
-                        @include('partials.books.copies.save')
+                        <h2 class="text--center"> {{ $book->book_name }} <small><a href="{{ route('books.edit',['books' => $book->id]) }}">Edit?</a></small></h2>
+
+                        <p>
+                            <strong>ISBN: </strong> {{ $book->isbn }}
+                        </p>
+
+                        <p>
+                            <strong>Edition: </strong> {{ ordinal_suffix(intval($book->edition)) }}
+                        </p>
+                        <p>
+                            <strong>Publication: </strong> {{ $book->publication_name }}
+                        </p>
+                        <p>
+                            <strong>Category: </strong> {{ $book->category_name }}
+                        </p>
+                        <p>
+                            <strong>Authors: </strong>
+                        @if(count($book->authors))
+                            <ul>
+                                @foreach($book->authors as $author)
+                                    <li>
+                                        {{  $author->name }}
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            No Authors on this book.
+                            @endif
+                            </p>
                     </div>
                 </div>
 
-                <br>
-                <strong>Copies: </strong> <br />
+                <div class="row">
+                    <div class="jumbotron">
+                        <h3 class="text--center">Add a book copy</h3>
+
+                        <form action="{{ route('books.copies.store',['books' => $book->id]) }}" method="POST">
+                            @include('partials.books.copies.save')
+                        </form>
+                    </div>
+                </div>
+
+                <h3 class="text--center">Book Copies of '<strong>{{ $book->book_name }}</strong>'</h3><br>
 
                 @if(count($book->copies))
                     <div class="table-responsive">
@@ -62,21 +70,20 @@
                                         <td>{{ $copy->copy_id }}</td>
                                         <td>
                                             {{ $copy->provider_name?:'N/A' }}
-                                            <br>
                                             <small>
                                                 [{{ $copy->provision_category_name?:'N/A' }}]
                                             </small>
                                         </td>
                                         <td>{{ ($copy->is_issued == 0)?"Available":"Issued" }}</td>
                                         <td>
-                                            <a href="{{ route('books.copies.createissue',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-primary">Show Issues</a>
-
-                                            <form action="{{ route('books.copies.destroy',['books' => $book->id,'copies' => $copy->copy_id]) }}" method="post">
+                                            <a href="{{ route('books.copies.createissue',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-primary" style="display: inline-block;">Transactions</a>
+                                            <a href="@" class="btn btn-warning">Edit</a>
+                                            <form action="{{ route('books.copies.destroy',['books' => $book->id,'copies' => $copy->copy_id]) }}" method="post" style="display: inline-block;">
                                                 {{ csrf_field() }}
 
                                                 <input type="hidden" name="_method" value="delete">
 
-                                                <input type="submit" value="Delete?" class="btn btn-danger">
+                                                <input type="submit" value="Delete" class="btn btn-danger">
                                             </form>
                                         </td>
                                     </tr>
