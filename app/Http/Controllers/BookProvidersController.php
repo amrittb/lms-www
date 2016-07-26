@@ -1,10 +1,8 @@
 <?php namespace App\Http\Controllers;
 
-use App\Http\Requests\SaveBookProviderRequest;
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\SaveBookProviderRequest;
 
 class BookProvidersController extends Controller {
 
@@ -36,6 +34,45 @@ class BookProvidersController extends Controller {
         ]);
 
         return redirect()->back()->with('message','Book Provider created successfully');
+    }
+
+    /**
+     * Shows book provider edit form
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function edit($id) {
+        $provider = DB::selectOne("SELECT id,
+                                          provider_name,
+                                          contact_no,
+                                          contact_pname 
+                                    FROM book_providers 
+                                    WHERE id = :id",compact('id'));
+
+        return view('books.providers.edit',compact('provider'));
+    }
+
+    /**
+     * Updates a book provider entry
+     *
+     * @param $id
+     * @param SaveBookProviderRequest $request
+     * @return mixed
+     */
+    public function update($id,SaveBookProviderRequest $request) {
+        DB::update("UPDATE book_providers SET 
+                    provider_name = :provider_name,
+                    contact_no = :contact_no,
+                    contact_pname = :contact_pname 
+                    WHERE id = :id",[
+            'provider_name' => $request->input('provider_name'),
+            'contact_no' => $request->input('contact_no'),
+            'contact_pname' => $request->input('contact_pname'),
+            'id' => $id
+        ]);
+
+        return redirect()->back()->with('message','Book Provider updated successfully');
     }
 
     /**

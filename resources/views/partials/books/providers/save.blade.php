@@ -1,5 +1,3 @@
-<h3 class="text--center">Save a Book Provider</h3>
-
 {{ csrf_field() }}
 
 <div class="row form-group{{ $errors->has('provider_name') ? ' has-error' : '' }}">

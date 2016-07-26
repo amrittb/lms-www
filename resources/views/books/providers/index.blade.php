@@ -12,6 +12,8 @@
 
                 <div class="row">
                     <div class="jumbotron">
+                        <h3 class="text--center">Create a book provider</h3><br>
+
                         <form action="{{ route('providers.store') }}" method="POST">
                             @include('partials.books.providers.save')
                         </form>
@@ -40,6 +42,8 @@
                                     <td>{{ $provider->contact_no }}</td>
                                     <td>{{ $provider->contact_pname }}</td>
                                     <td>
+                                        <a href="{{ route('providers.edit',['providers' => $provider->id]) }}"
+                                           class="btn btn-warning">Edit</a>
                                         <form action="{{ route('providers.destroy',['providers' => $provider->id]) }}" method="POST" style="display: inline-block;">
                                             {{ csrf_field() }}
 
