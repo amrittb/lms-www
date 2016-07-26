@@ -24,7 +24,11 @@ class ProvisionCategoriesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(SaveProvisionCategoryRequest $request) {
+        DB::insert("INSERT INTO provision_categories VALUES(NULL,:category_name)",[
+            'category_name' => $request->input('category_name')
+        ]);
 
+        return redirect()->back()->with('message','Provision Category added successfully');
     }
 
     /**
@@ -34,7 +38,9 @@ class ProvisionCategoriesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
+        $provisionCategory = DB::selectOne("SELECT * FROM provision_categories WHERE id = :id",compact('id'));
 
+        return view('books.provisioncategories.edit',compact('provisionCategory'));
     }
 
     /**
@@ -45,7 +51,12 @@ class ProvisionCategoriesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function update(SaveProvisionCategoryRequest $request, $id) {
+        DB::update("UPDATE provision_categories SET category_name = :category_name WHERE id = :id",[
+            'category_name' => $request->input('category_name'),
+            'id' => $id
+        ]);
 
+        return redirect()->route('provisioncategories.index')->with('message','Provision Category updated successfully');
     }
 
     /**
@@ -55,6 +66,8 @@ class ProvisionCategoriesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
+        DB::delete("DELETE FROM provision_categories WHERE id = :id",compact('id'));
 
+        return redirect()->back()->with('message','Provision Category deleted successfully');
     }
 }
