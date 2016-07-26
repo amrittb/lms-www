@@ -35,7 +35,7 @@
                                     <td>{{ $author->id }}</td>
                                     <td>{{ $author->name }}</td>
                                     <td>
-                                        {{--<a href="{{ route('authors.edit',['authors' => $author->id]) }}" class="btn btn-warning">Edit</a>--}}
+                                        <a href="{{ route('authors.edit',['authors' => $author->id]) }}" class="btn btn-warning">Edit</a>
                                         <form action="{{ route('authors.destroy',['authors' => $author->id]) }}" method="POST" style="display: inline-block;">
                                             {{ csrf_field() }}
 

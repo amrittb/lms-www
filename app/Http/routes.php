@@ -48,7 +48,7 @@ Route::resource('/users','UsersController',['except' => ['create','store']]);
 
 Route::resource('/publications','PublicationsController',['except' => ['create','show']]);
 
-Route::resource('/authors','AuthorsController',['only' => ['index','store','destroy']]);
+Route::resource('/authors','AuthorsController',['except' => ['create','show']]);
 
 Route::resource('/categories','BookCategoriesController',['only' => ['index','store','destroy']]);
 

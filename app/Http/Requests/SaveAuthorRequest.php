@@ -22,7 +22,7 @@ class SaveAuthorRequest extends Request
      */
     public function rules() {
         return [
-            'author_name' => 'required'
+            'name' => 'required'
         ];
     }
 }

@@ -28,11 +28,38 @@ class AuthorsController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function store(SaveAuthorRequest $request) {
-        DB::insert("INSERT INTO authors VALUES (NULL,:author_name)",[
-            'author_name' => $request->input('author_name')
+        DB::insert("INSERT INTO authors VALUES (NULL,:name)",[
+            'name' => $request->input('name')
         ]);
 
         return redirect()->back()->with('message','Author added successfully');
+    }
+
+    /**
+     * Shows a form to edit author
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function edit($id) {
+        $author = DB::selectOne("SELECT * FROM authors WHERE id = :id",compact('id'));
+
+        return view('authors.edit',compact('author'));
+    }
+
+    /**
+     * Updates an author
+     *
+     * @param $id
+     * @param SaveAuthorRequest $request
+     */
+    public function update($id,SaveAuthorRequest $request) {
+        DB::update("UPDATE `authors` SET `name` = :name WHERE `id` = :id",[
+            'name' => $request->input('name'),
+            'id' => $id
+        ]);
+
+        return redirect()->back()->with('message','Author updated successfully');
     }
 
     /**
