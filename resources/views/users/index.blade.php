@@ -4,7 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="text--center">Users list</h2><br>
+                <h2 class="text--center">Users list
+                    @can('create-user')
+                        <small><a href="{{ url('/register') }}">Add new User</a></small>
+                    @endcan
+                </h2><br>
 
                 @include('partials.messagebag')
 

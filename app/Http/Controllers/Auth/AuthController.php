@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\Role;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -37,9 +38,9 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+    public function __construct() {
+        $this->middleware($this->guestMiddleware(), ['except' => ['logout','showRegistrationForm','register']]);
+        $this->middleware('auth',['only' => ['showRegistrationForm','register']]);
     }
 
     /**
@@ -81,5 +82,26 @@ class AuthController extends Controller
         }
 
         return Role::findOrFail($data['role_id'])->users()->create($input);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            $this->throwValidationException(
+                $request, $validator
+            );
+        }
+
+        $this->create($request->all());
+
+        return redirect()->route('users.index')->with('message','User registered successfully');
     }
 }
