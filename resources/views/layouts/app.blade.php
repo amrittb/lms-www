@@ -39,7 +39,9 @@
                         <li><a href="{{ route('books.index') }}">Books</a></li>
                         <li><a href="{{ route('users.index') }}">Users</a></li>
                         <li><a href="{{ route('authors.index') }}">Authors</a></li>
-                        <li><a href="{{ route('categories.index') }}">Categories</a></li>
+                        <li><a href="{{ route('categories.index') }}">Book Categories</a></li>
+                        <li><a href="{{ route('providers.index') }}">Book Providers</a>
+                        <li><a href="{{ route('provisioncategories.index') }}">Provision Categories</a></li>
                         <li><a href="{{ route('books.create') }}">Create a Boook</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -47,6 +49,7 @@
                             </a>
 
                             <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ route('users.edit',['users' => Auth::id()]) }}">Edit your profile</a></li>
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
                             </ul>
                         </li>
