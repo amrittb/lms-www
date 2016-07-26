@@ -4,7 +4,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3>{{ $user->first_name.' '.$user->middle_name.' '.$user->last_name }} <small><a href="{{ route('users.edit',['users' => $user->id]) }}">Edit?</a></small></h3>
+                <h3>{{ $user->first_name.' '.$user->middle_name.' '.$user->last_name }}
+                    @can('edit-user',$user)
+                        <small><a href="{{ route('users.edit',['users' => $user->id]) }}">Edit?</a></small>
+                    @endcan
+                </h3>
 
                 <br>
                 <br>
