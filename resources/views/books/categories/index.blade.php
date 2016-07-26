@@ -4,20 +4,22 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="text--center">Book Categories</h2>
+                <h2 class="text--center">Book Categories</h2><br>
 
                 @include('partials.messagebag')
 
-                <div class="row">
-                    <div class="jumbotron">
-                        <h3 class="text--center">Create a new category</h3><br>
-                        <form action="{{ route('categories.store') }}" method="POST">
-                            @include('partials.books.categories.save')
-                        </form>
+                @can('save-book-category')
+                    <div class="row">
+                        <div class="jumbotron">
+                            <h3 class="text--center">Create a new category</h3><br>
+                            <form action="{{ route('categories.store') }}" method="POST">
+                                @include('partials.books.categories.save')
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @endcan
 
-                <h3 class="text--center">Authors List</h3>
+                <h3 class="text--center">Book Categories List</h3>
 
                 @if(count($categories))
                     <div class="table-responsive">
@@ -25,7 +27,7 @@
                             <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Name</th>
+                                <th>Category Name</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -35,14 +37,19 @@
                                     <td>{{ $category->id }}</td>
                                     <td>{{ $category->category_name }}</td>
                                     <td>
-                                        <a href="{{ route('categories.edit',['categories' => $category->id]) }}" class="btn btn-warning">Edit</a>
-                                        <form action="{{ route('categories.destroy',['categories' => $category->id]) }}" method="POST" style="display: inline-block;">
-                                            {{ csrf_field() }}
+                                        @can('save-book-category')
+                                            <a href="{{ route('categories.edit',['categories' => $category->id]) }}" class="btn btn-warning">Edit</a>
+                                        @endcan
 
-                                            <input type="hidden" name="_method" value="delete">
+                                        @can('delete-book-category')
+                                            <form action="{{ route('categories.destroy',['categories' => $category->id]) }}" method="POST" style="display: inline-block;">
+                                                {{ csrf_field() }}
 
-                                            <input type="submit" class="btn btn-danger" value="Delete">
-                                        </form>
+                                                <input type="hidden" name="_method" value="delete">
+
+                                                <input type="submit" class="btn btn-danger" value="Delete">
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

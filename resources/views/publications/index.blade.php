@@ -8,17 +8,19 @@
 
                 <br>
 
-                <div class="row">
-                    <div class="jumbotron">
-                        <h3 class="text--center">Create a new publication</h3>
-                        <br />
-                        <form action="{{ route('publications.store') }}" method="POST">
-                            @include('partials.publications.save')
-                        </form>
-                    </div>
-                </div>
-
                 @include('partials.messagebag')
+
+                @can('save-publication')
+                    <div class="row">
+                        <div class="jumbotron">
+                            <h3 class="text--center">Create a new publication</h3>
+                            <br />
+                            <form action="{{ route('publications.store') }}" method="POST">
+                                @include('partials.publications.save')
+                            </form>
+                        </div>
+                    </div>
+                @endcan
 
                 <h3 class="text--center">Publications list</h3>
 
@@ -38,15 +40,20 @@
                                     <td>{{ $publication->id }}</td>
                                     <td>{{ $publication->publication_name }}</td>
                                     <td>
-                                        <a href="{{ route('publications.edit',['publications' => $publication->id]) }}"
+                                        @can('save-publication')
+                                            <a href="{{ route('publications.edit',['publications' => $publication->id]) }}"
                                            class="btn btn-warning">Edit</a>
-                                        <form action="{{ route('publications.destroy',['publications' => $publication->id]) }}" method="POST" style="display: inline-block;">
-                                            {{ csrf_field() }}
+                                        @endcan
 
-                                            <input type="hidden" name="_method" value="delete">
+                                        @can('delete-publication')
+                                            <form action="{{ route('publications.destroy',['publications' => $publication->id]) }}" method="POST" style="display: inline-block;">
+                                                {{ csrf_field() }}
 
-                                            <input type="submit" class="btn btn-danger" value="Delete">
-                                        </form>
+                                                <input type="hidden" name="_method" value="delete">
+
+                                                <input type="submit" class="btn btn-danger" value="Delete">
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

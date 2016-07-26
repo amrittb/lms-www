@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="text--center">Users list</h3>
+                <h2 class="text--center">Users list</h2><br>
 
                 @include('partials.messagebag')
 
@@ -31,14 +31,19 @@
                                     <td>{{ \Carbon\Carbon::parse($user->expires_at)->diffForHumans() }}</td>
                                     <td>
                                         <a href="{{ route('users.show',['users' => $user->id]) }}" class="btn btn-primary">View User</a>
-                                        <a href="{{ route('users.edit',['users' => $user->id]) }}" class="btn btn-warning">Edit?</a>
-                                        <form action="{{ route('users.destroy',['users' => $user->id]) }}" method="POST" style="display: inline-block;">
-                                            {{ csrf_field() }}
+                                        @can('edit-user',$user)
+                                            <a href="{{ route('users.edit',['users' => $user->id]) }}" class="btn btn-warning">Edit</a>
+                                        @endcan
 
-                                            <input type="hidden" name="_method" value="delete">
+                                        @can('delete-user')
+                                            <form action="{{ route('users.destroy',['users' => $user->id]) }}" method="POST" style="display: inline-block;">
+                                                {{ csrf_field() }}
 
-                                            <input type="submit" class="btn btn-danger" value="Delete?">
-                                        </form>
+                                                <input type="hidden" name="_method" value="delete">
+
+                                                <input type="submit" class="btn btn-danger" value="Delete">
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

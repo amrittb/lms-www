@@ -4,25 +4,25 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="text--center">Book Providers</h2>
-
-                <br><br>
+                <h2 class="text--center">Book Providers</h2><br>
 
                 @include('partials.messagebag')
 
-                <div class="row">
-                    <div class="jumbotron">
-                        <h3 class="text--center">Create a book provider</h3><br>
+                @can('save-book-provider')
+                    <div class="row">
+                        <div class="jumbotron">
+                            <h3 class="text--center">Create a book provider</h3><br>
 
-                        <form action="{{ route('providers.store') }}" method="POST">
-                            @include('partials.books.providers.save')
-                        </form>
+                            <form action="{{ route('providers.store') }}" method="POST">
+                                @include('partials.books.providers.save')
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @endcan
 
-            <h3 class="text--center">Book Providers list</h3>
+                <h3 class="text--center">Book Providers list</h3>
 
-            @if(count($bookProviders))
+                @if(count($bookProviders))
                     <div class="table-responsive">
                         <table class="table table-stripped">
                             <thead>
@@ -42,15 +42,20 @@
                                     <td>{{ $provider->contact_no }}</td>
                                     <td>{{ $provider->contact_pname }}</td>
                                     <td>
-                                        <a href="{{ route('providers.edit',['providers' => $provider->id]) }}"
+                                        @can('save-book-provider')
+                                            <a href="{{ route('providers.edit',['providers' => $provider->id]) }}"
                                            class="btn btn-warning">Edit</a>
-                                        <form action="{{ route('providers.destroy',['providers' => $provider->id]) }}" method="POST" style="display: inline-block;">
-                                            {{ csrf_field() }}
+                                        @endcan
 
-                                            <input type="hidden" name="_method" value="delete">
+                                        @can('delete-book-provider')
+                                            <form action="{{ route('providers.destroy',['providers' => $provider->id]) }}" method="POST" style="display: inline-block;">
+                                                {{ csrf_field() }}
 
-                                            <input type="submit" class="btn btn-danger" value="Delete?">
-                                        </form>
+                                                <input type="hidden" name="_method" value="delete">
+
+                                                <input type="submit" class="btn btn-danger" value="Delete?">
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

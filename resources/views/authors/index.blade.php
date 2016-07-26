@@ -4,18 +4,20 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="text--center">Authors</h2>
+                <h2 class="text--center">Authors</h2><br>
 
                 @include('partials.messagebag')
 
-                <div class="row">
-                    <div class="jumbotron">
-                        <h3 class="text--center">Create a new author</h3><br>
-                        <form action="{{ route('authors.store') }}" method="POST">
-                            @include('partials.authors.save')
-                        </form>
+                @can('save-author')
+                    <div class="row">
+                        <div class="jumbotron">
+                            <h3 class="text--center">Create a new author</h3><br>
+                            <form action="{{ route('authors.store') }}" method="POST">
+                                @include('partials.authors.save')
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @endcan
 
                 <h3 class="text--center">Authors List</h3>
 
@@ -35,14 +37,19 @@
                                     <td>{{ $author->id }}</td>
                                     <td>{{ $author->name }}</td>
                                     <td>
-                                        <a href="{{ route('authors.edit',['authors' => $author->id]) }}" class="btn btn-warning">Edit</a>
-                                        <form action="{{ route('authors.destroy',['authors' => $author->id]) }}" method="POST" style="display: inline-block;">
-                                            {{ csrf_field() }}
+                                        @can('save-author')
+                                            <a href="{{ route('authors.edit',['authors' => $author->id]) }}" class="btn btn-warning">Edit</a>
+                                        @endcan
 
-                                            <input type="hidden" name="_method" value="delete">
+                                        @can('delete-author')
+                                            <form action="{{ route('authors.destroy',['authors' => $author->id]) }}" method="POST" style="display: inline-block;">
+                                                {{ csrf_field() }}
 
-                                            <input type="submit" class="btn btn-danger" value="Delete">
-                                        </form>
+                                                <input type="hidden" name="_method" value="delete">
+
+                                                <input type="submit" class="btn btn-danger" value="Delete">
+                                            </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

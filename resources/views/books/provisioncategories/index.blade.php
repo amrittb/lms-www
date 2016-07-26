@@ -4,17 +4,19 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h2 class="text--center">Provision Categories</h2>
+                <h2 class="text--center">Provision Categories</h2><br>
 
                 @include('partials.messagebag')
 
-                <div class="row">
-                    <div class="jumbotron">
-                        <form action="{{ route('provisioncategories.store') }}" method="POST">
-                            @include('partials.books.provisioncategories.save')
-                        </form>
+                @can('save-provision-category')
+                    <div class="row">
+                        <div class="jumbotron">
+                            <form action="{{ route('provisioncategories.store') }}" method="POST">
+                                @include('partials.books.provisioncategories.save')
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @endcan
 
                 <h3 class="text--center">Provision Category List</h3>
 
@@ -34,15 +36,20 @@
                                 <td>{{ $category->id }}</td>
                                 <td>{{ $category->category_name }}</td>
                                 <td>
-                                    <a href="{{ route('provisioncategories.edit',['provisioncategories' => $category->id]) }}"
+                                    @can('save-provision-category')
+                                        <a href="{{ route('provisioncategories.edit',['provisioncategories' => $category->id]) }}"
                                        class="btn btn-warning">Edit</a>
-                                    <form action="{{ route('provisioncategories.destroy',['provisioncategories' => $category->id]) }}" method="POST" style="display: inline-block;">
-                                        {{ csrf_field() }}
+                                    @endcan
 
-                                        <input type="hidden" name="_method" value="delete">
+                                    @can('delete-provision-category')
+                                        <form action="{{ route('provisioncategories.destroy',['provisioncategories' => $category->id]) }}" method="POST" style="display: inline-block;">
+                                            {{ csrf_field() }}
 
-                                        <input type="submit" class="btn btn-danger" value="Delete">
-                                    </form>
+                                            <input type="hidden" name="_method" value="delete">
+
+                                            <input type="submit" class="btn btn-danger" value="Delete">
+                                        </form>
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

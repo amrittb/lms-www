@@ -4,11 +4,14 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="text--center">Book list
-                    <small>
-                            <a href="{{ route('books.create') }}">Create a new book</a>
-                    </small>
-                </h3>
+                <h2 class="text--center">Book list
+                    @can('save-book')
+                        <small>
+                                <a href="{{ route('books.create') }}">Create a new book</a>
+                        </small>
+                    @endcan
+                </h2>
+                <br>
 
                 @include('partials.messagebag')
 
@@ -47,16 +50,21 @@
                                         <td>{{ $book->copy_count }}</td>
                                         <td>
                                             <a href="{{ route('books.show',['books' => $book->id]) }}" class="btn btn-primary btn-block">View</a><br />
-                                            <a href="{{ route('books.edit',['books' => $book->id]) }}" class="btn btn-warning btn-block">Edit</a><br />
-                                            <form action="{{ route('books.destroy',['books' => $book->id]) }}" method="POST">
-                                                {{ csrf_field() }}
+                                            @can('save-book')
+                                                <a href="{{ route('books.edit',['books' => $book->id]) }}" class="btn btn-warning btn-block">Edit</a><br />
+                                            @endcan
 
-                                                <input type="hidden" name="_method" value="delete">
+                                            @can('delete-book')
+                                                <form action="{{ route('books.destroy',['books' => $book->id]) }}" method="POST">
+                                                    {{ csrf_field() }}
 
-                                                <button type="submit" class="btn btn-danger btn-block">
-                                                    Delete
-                                                </button>
-                                            </form>
+                                                    <input type="hidden" name="_method" value="delete">
+
+                                                    <button type="submit" class="btn btn-danger btn-block">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach

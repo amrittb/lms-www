@@ -36,12 +36,17 @@
                         <li><a href="{{ url('/login') }}">Login</a></li>
                     @else
                         <li><a href="{{ route('books.index') }}">Books</a></li>
-                        <li><a href="{{ route('users.index') }}">Users</a></li>
-                        <li><a href="{{ route('authors.index') }}">Authors</a></li>
-                        <li><a href="{{ route('categories.index') }}">Book Categories</a></li>
-                        <li><a href="{{ route('providers.index') }}">Book Providers</a>
-                        <li><a href="{{ route('provisioncategories.index') }}">Provision Categories</a></li>
-                        <li><a href="{{ route('books.create') }}">Create a Boook</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Entities <span class="caret"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="{{ route('publications.index') }}">Publications</a></li>
+                                <li><a href="{{ route('authors.index') }}">Authors</a></li>
+                                <li><a href="{{ route('categories.index') }}">Book Categories</a></li>
+                                <li><a href="{{ route('providers.index') }}">Book Providers</a>
+                                <li><a href="{{ route('provisioncategories.index') }}">Provision Categories</a></li>
+                                <li><a href="{{ route('users.index') }}">Users</a></li>
+                            </ul>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 Howdy! {{ Auth::user()->first_name }} <span class="caret"></span>

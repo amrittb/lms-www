@@ -9,7 +9,13 @@
 
                 <div class="row">
                     <div class="jumbotron">
-                        <h2 class="text--center"> {{ $book->book_name }} <small><a href="{{ route('books.edit',['books' => $book->id]) }}">Edit?</a></small></h2>
+                        <h2 class="text--center"> {{ $book->book_name }}
+                            @can('save-book')
+                                <small>
+                                    <a href="{{ route('books.edit',['books' => $book->id]) }}">Edit?</a>
+                                </small>
+                            @endcan
+                        </h2>
 
                         <p>
                             <strong>ISBN: </strong> {{ $book->isbn }}
@@ -26,30 +32,32 @@
                         </p>
                         <p>
                             <strong>Authors: </strong>
-                        @if(count($book->authors))
-                            <ul>
-                                @foreach($book->authors as $author)
-                                    <li>
-                                        {{  $author->name }}
-                                    </li>
-                                @endforeach
-                            </ul>
-                        @else
-                            No Authors on this book.
+                            @if(count($book->authors))
+                                <ul>
+                                    @foreach($book->authors as $author)
+                                        <li>
+                                            {{  $author->name }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                No Authors on this book.
                             @endif
-                            </p>
+                        </p>
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="jumbotron">
-                        <h3 class="text--center">Add a book copy</h3>
+                @can('save-book-copy')
+                    <div class="row">
+                        <div class="jumbotron">
+                            <h3 class="text--center">Add a book copy</h3>
 
-                        <form action="{{ route('books.copies.store',['books' => $book->id]) }}" method="POST">
-                            @include('partials.books.copies.save')
-                        </form>
+                            <form action="{{ route('books.copies.store',['books' => $book->id]) }}" method="POST">
+                                @include('partials.books.copies.save')
+                            </form>
+                        </div>
                     </div>
-                </div>
+                @endcan
 
                 <h3 class="text--center">Book Copies of '<strong>{{ $book->book_name }}</strong>'</h3><br>
 
@@ -76,15 +84,23 @@
                                         </td>
                                         <td>{{ ($copy->is_issued == 0)?"Available":"Issued" }}</td>
                                         <td>
-                                            <a href="{{ route('books.copies.createissue',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-primary" style="display: inline-block;">Transactions</a>
-                                            <a href="{{ route('books.copies.edit',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-warning">Edit</a>
-                                            <form action="{{ route('books.copies.destroy',['books' => $book->id,'copies' => $copy->copy_id]) }}" method="post" style="display: inline-block;">
-                                                {{ csrf_field() }}
+                                            @can('issue-book')
+                                                <a href="{{ route('books.copies.createissue',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-primary" style="display: inline-block;">Transactions</a>
+                                            @endcan
 
-                                                <input type="hidden" name="_method" value="delete">
+                                            @can('save-book-copy')
+                                                <a href="{{ route('books.copies.edit',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-warning">Edit</a>
+                                            @endcan
 
-                                                <input type="submit" value="Delete" class="btn btn-danger">
-                                            </form>
+                                            @can('delete-book-copy')
+                                                <form action="{{ route('books.copies.destroy',['books' => $book->id,'copies' => $copy->copy_id]) }}" method="post" style="display: inline-block;">
+                                                    {{ csrf_field() }}
+
+                                                    <input type="hidden" name="_method" value="delete">
+
+                                                    <input type="submit" value="Delete" class="btn btn-danger">
+                                                </form>
+                                            @endcan
                                         </td>
                                     </tr>
                                 @endforeach
