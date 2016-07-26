@@ -12,7 +12,7 @@
 
                 <form action="{{ route('providers.update',['providers' => $provider->id]) }}" method="POST">
                     <input type="hidden" name="_method" value="patch">
-                    
+
                     @include('partials.books.providers.save')
                 </form>
             </div>

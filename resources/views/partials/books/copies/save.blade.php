@@ -4,7 +4,7 @@
     {{ csrf_field() }}
 
     <div class="row form-group{{ $errors->has('copy_id') ? ' has-error' : '' }}">
-        <label for="copy-id" class="col-md-4 control-label">Copy Id</label>
+        <label for="copy-id" class="col-md-3 control-label">Copy Id</label>
 
         <div class="col-md-6">
             <input id="copy-id" type="number" placeholder="Copy Id for this copy" class="form-control" name="copy_id" value="{{ old('copy_id') }}">
@@ -18,7 +18,7 @@
     </div>
 
     <div class="row form-group{{ $errors->has('provider_id') ? ' has-error' : '' }}">
-        <label for="provider-id" class="col-md-4 control-label">Book Provider</label>
+        <label for="provider-id" class="col-md-3 control-label">Book Provider</label>
 
         <div class="col-md-6">
             <select id="provider-id" class="form-control chosen-select" name="provider_id">
@@ -37,10 +37,14 @@
                 </span>
             @endif
         </div>
+
+        <div class="col-md-3">
+            <a href="{{ route('providers.index') }}" class="btn btn-primary">Add New Book Provider</a>
+        </div>
     </div>
 
     <div class="row form-group{{ $errors->has('provision_category_id') ? ' has-error' : '' }}">
-        <label for="provision-category-id" class="col-md-4 control-label">Provision Category</label>
+        <label for="provision-category-id" class="col-md-3 control-label">Provision Category</label>
 
         <div class="col-md-6">
             <select id="provision-category-id" class="form-control chosen-select" name="provision_category_id">
@@ -62,7 +66,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-6 col-md-offset-4">
+        <div class="col-md-6 col-md-offset-3">
             <button type="submit" class="btn btn-primary">
                 Add a Copy
             </button>
