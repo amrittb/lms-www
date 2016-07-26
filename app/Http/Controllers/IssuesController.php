@@ -2,8 +2,8 @@
 
 use Carbon\Carbon;
 use App\Http\Requests;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\IssueBookCopyRequest;
 
 class IssuesController extends Controller {
 
@@ -39,10 +39,10 @@ class IssuesController extends Controller {
      *
      * @param $bookId
      * @param $copyId
-     * @param Request $request
+     * @param IssueBookCopyRequest $request
      * @return mixed
      */
-    public function issue($bookId, $copyId, Request $request) {
+    public function issue($bookId, $copyId, IssueBookCopyRequest $request) {
         $input = $this->resolveInput($bookId, $copyId, $request);
 
         $fine = 0;
@@ -163,10 +163,10 @@ class IssuesController extends Controller {
      *
      * @param $bookId
      * @param $copyId
-     * @param Request $request
+     * @param IssueBookCopyRequest $request
      * @return array
      */
-    protected function resolveInput($bookId, $copyId, Request $request) {
+    protected function resolveInput($bookId, $copyId, IssueBookCopyRequest $request) {
         return [
             'member_id' => $request->input('member_id'),
             'librarian_id' => \Auth::user()->id,

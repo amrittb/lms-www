@@ -64,7 +64,7 @@
     </div>
 
     <div class="col-md-3">
-        <a href="#" class="btn btn-primary btn-block">Add new publication</a>
+        <a href="{{ route('publications.index') }}" target="_blank" class="btn btn-primary btn-block">Add new publication</a>
     </div>
 </div>
 
