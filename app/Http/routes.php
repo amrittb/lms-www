@@ -18,6 +18,16 @@ Route::group(['prefix' => '/books/{books}/copies'],function() {
         'as' => 'books.copies.destroy'
     ]);
 
+    Route::get('/{copies}/edit',[
+        'uses' => 'BookCopiesController@edit',
+        'as' => 'books.copies.edit'
+    ]);
+
+    Route::patch('/{copies}',[
+        'uses' => 'BookCopiesController@update',
+        'as' => 'books.copies.update'
+    ]);
+
     Route::get('/{copies}/issues',[
         'uses' => 'IssuesController@create',
         'as' => 'books.copies.createissue'

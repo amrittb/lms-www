@@ -18,10 +18,15 @@ class SaveBookCopyRequest extends Request {
      * @return array
      */
     public function rules() {
-        return [
-            'copy_id' => 'required|integer',
+        $rules = [
             'provider_id' => 'required',
             'provision_category_id' => 'required'
         ];
+
+        if($this->getMethod() != "PATCH") {
+            $rules['copy_id'] = 'required|integer';
+        }
+
+        return $rules;
     }
 }

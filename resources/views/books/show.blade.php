@@ -77,7 +77,7 @@
                                         <td>{{ ($copy->is_issued == 0)?"Available":"Issued" }}</td>
                                         <td>
                                             <a href="{{ route('books.copies.createissue',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-primary" style="display: inline-block;">Transactions</a>
-                                            <a href="@" class="btn btn-warning">Edit</a>
+                                            <a href="{{ route('books.copies.edit',['books' => $book->id,'copies' => $copy->copy_id]) }}" class="btn btn-warning">Edit</a>
                                             <form action="{{ route('books.copies.destroy',['books' => $book->id,'copies' => $copy->copy_id]) }}" method="post" style="display: inline-block;">
                                                 {{ csrf_field() }}
 
