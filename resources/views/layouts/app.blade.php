@@ -34,7 +34,6 @@
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
                     @else
                         <li><a href="{{ route('books.index') }}">Books</a></li>
                         <li><a href="{{ route('users.index') }}">Users</a></li>
