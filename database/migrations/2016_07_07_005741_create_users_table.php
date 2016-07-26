@@ -2,33 +2,31 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
-class CreateUsersTable extends Migration
-{
+class CreateUsersTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('first_name');
-            $table->string('middle_name')->nullable();
-            $table->string('last_name');
-            $table->string('email')->unique();
-            $table->string('password');
-            $table->timestamp('expires_at')->nullable();
-            $table->integer('role_id')->unsigned();
-            $table->rememberToken();
-            $table->timestamps();
-
-            $table->foreign('role_id')
-                ->references('id')
-                ->on('roles')
-                ->onDelete('cascade');
-        });
+    public function up() {
+        DB::statement("CREATE TABLE `users` (
+                        `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `first_name` VARCHAR(30) NOT NULL,
+                        `middle_name` VARCHAR(30) DEFAULT NULL,
+                        `last_name` VARCHAR(30) NOT NULL,
+                        `email` VARCHAR(60) NOT NULL UNIQUE,
+                        `password` VARCHAR(100) NOT NULL,
+                        `expires_at` TIMESTAMP NULL DEFAULT NULL,
+                        `role_id` int(10) UNSIGNED NOT NULL,
+                        `remember_token` VARCHAR(100) DEFAULT NULL,
+                        `created_at` TIMESTAMP NULL DEFAULT NULL,
+                        `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                        PRIMARY KEY(id),
+                        FOREIGN KEY(role_id) REFERENCES roles(id)
+                        ON DELETE CASCADE
+        )");
     }
 
     /**
@@ -36,8 +34,7 @@ class CreateUsersTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::drop('users');
+    public function down() {
+        DB::statement("DROP TABLE users");
     }
 }

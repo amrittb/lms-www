@@ -2,27 +2,28 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBooksTable extends Migration
-{
+class CreateBooksTable extends Migration {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('books', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('book_name');
-            $table->string('isbn');
-            $table->integer('edition')->unsigned();
-            $table->integer('publication_id')->unsigned();
-            $table->timestamps();
-
-            $table->foreign('publication_id')->references('id')->on('publications')->onDelete('cascade');
-        });
+    public function up() {
+        DB::statement("CREATE TABLE `books` (
+                        `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+                        `book_name` VARCHAR (255) NOT NULL,
+                        `isbn` VARCHAR(20) NOT NULL,
+                        `edition` INT(10) UNSIGNED NOT NULL,
+                        `publication_id` INT(10) UNSIGNED NOT NULL,
+                        `created_at` TIMESTAMP NULL DEFAULT NULL,
+                        `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                        PRIMARY KEY(id),
+                        FOREIGN KEY(publication_id) REFERENCES publications(id)
+                        ON DELETE CASCADE 
+          )");
     }
 
     /**
@@ -30,8 +31,7 @@ class CreateBooksTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::drop('books');
+    public function down() {
+        DB::statement("DROP TABLE books");
     }
 }
