@@ -50,7 +50,7 @@ Route::resource('/publications','PublicationsController',['except' => ['create',
 
 Route::resource('/authors','AuthorsController',['except' => ['create','show']]);
 
-Route::resource('/categories','BookCategoriesController',['only' => ['index','store','destroy']]);
+Route::resource('/categories','BookCategoriesController',['except' => ['create','show']]);
 
 Route::resource('/issues','IssuesController',['only' => 'index']);
 
