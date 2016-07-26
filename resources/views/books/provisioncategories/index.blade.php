@@ -4,13 +4,19 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h3 class="text--center">Provision Category list</h3>
-
-                <form action="{{ route('provisioncategories.store') }}" method="POST">
-                    @include('partials.books.provisioncategories.save')
-                </form>
+                <h2 class="text--center">Provision Categories</h2>
 
                 @include('partials.messagebag')
+
+                <div class="row">
+                    <div class="jumbotron">
+                        <form action="{{ route('provisioncategories.store') }}" method="POST">
+                            @include('partials.books.provisioncategories.save')
+                        </form>
+                    </div>
+                </div>
+
+                <h3 class="text--center">Provision Category List</h3>
 
                 @if(count($provisionCategories))
                     <div class="table-responsive">
