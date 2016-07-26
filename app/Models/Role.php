@@ -5,6 +5,21 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model {
 
     /**
+     * Id for administrator
+     */
+    const ADMINISTRATOR = 1;
+
+    /**
+     * Id for librarian
+     */
+    const LIBRARIAN = 2;
+
+    /**
+     * Id for member
+     */
+    const MEMBER = 3;
+
+    /**
      * Defines if there are timestamps in the table
      *
      * @var bool

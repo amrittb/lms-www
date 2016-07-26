@@ -20,4 +20,31 @@ class User extends Authenticatable {
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Checks if the user is an administrator
+     *
+     * @return bool
+     */
+    public function isAdmin() {
+        return $this->role_id == Role::ADMINISTRATOR;
+    }
+
+    /**
+     * Checks if the user is a librarian
+     *
+     * @return bool
+     */
+    public function isLibrarian() {
+        return $this->role_id == Role::LIBRARIAN;
+    }
+
+    /**
+     * Checks if the user is a member
+     *
+     * @return bool
+     */
+    public function isMember() {
+        return $this->role_id == Role::MEMBER;
+    }
 }
