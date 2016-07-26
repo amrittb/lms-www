@@ -36,8 +36,10 @@ Route::group(['prefix' => '/books/{books}/copies'],function() {
 
 Route::resource('/users','UsersController',['except' => ['create','store']]);
 
-Route::resource('/categories','BookCategoriesController',['only' => ['index','store','destroy']]);
-
 Route::resource('/authors','AuthorsController',['only' => ['index','store','destroy']]);
 
+Route::resource('/categories','BookCategoriesController',['only' => ['index','store','destroy']]);
+
 Route::resource('/issues','IssuesController',['only' => 'index']);
+
+Route::resource('/providers','BookProvidersController',['only' => ['index','store','destroy']]);
