@@ -15,7 +15,7 @@ class IssuesController extends Controller {
     /**
      * Book issue day limit
      */
-    const BOOK_ISSUE_DAY_LIMIT = 14;
+    const BOOK_ISSUE_DAY_LIMIT = 15;
 
     /**
      * Show form to issue a book
