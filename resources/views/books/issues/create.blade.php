@@ -72,7 +72,7 @@
                                         <select id="member-id" class="form-control chosen-select" name="member_id">
                                             @foreach($members as $member)
                                                 <option value="{{ $member->id }}">
-                                                    {{ $member->first_name.' '.$member->middle_name.' '.$member->last_name }}
+                                                    {{ $member->id.' - '.$member->first_name.' '.$member->middle_name.' '.$member->last_name }}
                                                 </option>
                                             @endforeach
                                         </select>
