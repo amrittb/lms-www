@@ -88,36 +88,44 @@
     </div>
 </div>
 
-<div class="form-group{{ $errors->has('expires_at') ? ' has-error' : '' }}">
-    <label for="expires-at" class="col-md-4 control-label">Expires At</label>
+@if( ! isset($user))
+    <div class="form-group{{ $errors->has('expires_at') ? ' has-error' : '' }}">
+        <label for="expires-at" class="col-md-4 control-label">Expires At</label>
 
-    <div class="col-md-6">
-        <date-picker name="expires_at" id="expires-at" date-time="{{ \Carbon\Carbon::parse(old('expires_at')?:(isset($user)?$user->expires_at:\Carbon\Carbon::now()->addYears(2)->toDateTimeString()))->format('M d, Y G:i') }}" ></date-picker>
+        <div class="col-md-6">
+            <date-picker name="expires_at" id="expires-at" date-time="{{ \Carbon\Carbon::parse(old('expires_at')?:(isset($user)?$user->expires_at:\Carbon\Carbon::now()->addYears(2)->toDateTimeString()))->format('M d, Y G:i') }}" ></date-picker>
 
-        @if ($errors->has('expires_at'))
-            <span class="help-block">
-                <strong>{{ $errors->first('expires_at') }}</strong>
-            </span>
-        @endif
+            @if ($errors->has('expires_at'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('expires_at') }}</strong>
+                </span>
+            @endif
+        </div>
     </div>
-</div>
+@else
+    <input type="hidden" name="expires_at" value="{{ $user->expires_at }}">
+@endif
 
-<div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
-    <label for="user-role" class="col-md-4 control-label">Role</label>
+@if( ! isset($user))
+    <div class="form-group{{ $errors->has('role_id') ? ' has-error' : '' }}">
+        <label for="user-role" class="col-md-4 control-label">Role</label>
 
-    <div class="col-md-6">
-        <select name="role_id" id="user-role" class="form-control">
-            @foreach($roles as $role)
-                <option value="{{ $role->id }}"
-                    {{ (isset($user) && $user->role_id == $role->id)?"selected":"" }}
-                >{{ $role->role_name }}</option>
-            @endforeach
-        </select>
+        <div class="col-md-6">
+            <select name="role_id" id="user-role" class="form-control">
+                @foreach($roles as $role)
+                    <option value="{{ $role->id }}"
+                        {{ (isset($user) && $user->role_id == $role->id)?"selected":"" }}
+                    >{{ $role->role_name }}</option>
+                @endforeach
+            </select>
 
-        @if ($errors->has('role_id'))
-            <span class="help-block">
-                <strong>{{ $errors->first('role_id') }}</strong>
-            </span>
-        @endif
+            @if ($errors->has('role_id'))
+                <span class="help-block">
+                    <strong>{{ $errors->first('role_id') }}</strong>
+                </span>
+            @endif
+        </div>
     </div>
-</div>
+@else
+    <input type="hidden" name="role_id" value="{{ $user->role_id }}">
+@endif
