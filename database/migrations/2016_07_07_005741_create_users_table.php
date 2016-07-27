@@ -18,11 +18,11 @@ class CreateUsersTable extends Migration {
                         `last_name` VARCHAR(30) NOT NULL,
                         `email` VARCHAR(60) NOT NULL UNIQUE,
                         `password` VARCHAR(100) NOT NULL,
-                        `expires_at` TIMESTAMP NULL DEFAULT NULL,
+                        `expires_at` TIMESTAMP DEFAULT NULL,
                         `role_id` int(10) UNSIGNED NOT NULL,
                         `remember_token` VARCHAR(100) DEFAULT NULL,
-                        `created_at` TIMESTAMP NULL DEFAULT NULL,
-                        `updated_at` TIMESTAMP NULL DEFAULT NULL,
+                        `created_at` TIMESTAMP DEFAULT NULL,
+                        `updated_at` TIMESTAMP DEFAULT NULL,
                         PRIMARY KEY(id),
                         FOREIGN KEY(role_id) REFERENCES roles(id)
                         ON DELETE CASCADE

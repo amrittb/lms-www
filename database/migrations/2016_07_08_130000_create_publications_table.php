@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreatePublicationsTable extends Migration
@@ -11,12 +12,12 @@ class CreatePublicationsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('publications', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('publication_name');
-        });
+    public function up() {
+        DB::statement("CREATE TABLE publications(
+            id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+            publication_name VARCHAR(255) NOT NULL,
+            PRIMARY KEY(id)
+        )");
     }
 
     /**
@@ -24,8 +25,7 @@ class CreatePublicationsTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::drop('publications');
+    public function down() {
+        DB::statement("DROP TABLE publications");
     }
 }
