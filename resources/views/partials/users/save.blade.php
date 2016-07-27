@@ -92,7 +92,7 @@
     <label for="expires-at" class="col-md-4 control-label">Expires At</label>
 
     <div class="col-md-6">
-        <date-picker name="expires_at" id="expires-at" date-time="{{ \Carbon\Carbon::parse(old('expires_at')?:(isset($user)?$user->expires_at:\Carbon\Carbon::now()->toDateTimeString()))->format('M d, Y G:i') }}" ></date-picker>
+        <date-picker name="expires_at" id="expires-at" date-time="{{ \Carbon\Carbon::parse(old('expires_at')?:(isset($user)?$user->expires_at:\Carbon\Carbon::now()->addYears(2)->toDateTimeString()))->format('M d, Y G:i') }}" ></date-picker>
 
         @if ($errors->has('expires_at'))
             <span class="help-block">
